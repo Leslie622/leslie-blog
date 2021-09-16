@@ -5,6 +5,9 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+// ElementUI-按需引入
+import "./components/element-ui/index"
+
 new Vue({
   router,
   store,

@@ -5,9 +5,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+  
+};
 </script>
 
-<style>
+<style lang="scss">
 @import "./assets/css/base.css";
 </style>

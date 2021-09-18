@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 // 异步组件
-const Home = () => import('../views/home/index.vue')
+const Home = () => import('../views/home')
 
 const routes = [
   {

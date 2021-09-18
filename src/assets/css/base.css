@@ -1,4 +1,29 @@
 /* normalizeCSS */
 @import "./normalize/normalize.css";
+
 /* 阿里图标库 */
-@import "../iconfont/index.css"
+@import "../iconfont/index.css";
+
+/* 字体 */
+@font-face {
+  font-family: "Monoton-Regular";
+  src: url(../font/Monoton-Regular.ttf);
+}
+
+/* 移动端适配 */
+@media screen and (min-width: 320px) and (max-width: 374px) {
+  html {
+    font-size: 9px;
+  }
+}
+@media screen and (min-width: 375px) and (max-width: 410px) {
+  html {
+    font-size: 11px;
+  }
+}
+@media screen and (min-width: 411px) {
+  /* [pixel2,一加]411px ｜ [iphone678P]414px  */
+  html {
+    font-size: 12px;
+  }
+}

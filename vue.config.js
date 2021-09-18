@@ -8,7 +8,14 @@ module.exports = {
         "store": "@/store",
         "views": "@/views",
         "util": "@/util",
-        "api":"@/api"
+        "api": "@/api"
+      }
+    }
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: `@import "~assets/css/global-variable/index.scss";`
       }
     }
   },

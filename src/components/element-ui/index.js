@@ -1,10 +1,14 @@
 import Vue from 'vue'
 import {
-  Button
+  Button,
+  Select,
+  Option,
 } from 'element-ui';
 
 const ComponentList = [
   Button,
+  Select,
+  Option,
 ]
 
 if (ComponentList.length) {

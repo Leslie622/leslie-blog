@@ -23,9 +23,8 @@ export default {
   data() {
     return {
       linkList: [
-        { path: "/MainBlog", value: "BLOG" },
-        { path: "/Diary", value: "DIARY" },
-        { path: "/Archive", value: "ARCHIVE" },
+        { path: "/blog", value: "BLOG" },
+        { path: "/diary", value: "DIARY" },
       ],
     };
   },
@@ -48,7 +47,7 @@ export default {
 }
 
 .nav-cotent {
-  padding: 3rem 0;
+  padding: 2rem 0;
   font-family: Arial;
 
   .nav-item {

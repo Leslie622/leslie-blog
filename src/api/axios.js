@@ -32,7 +32,7 @@ export function request(config) {
   instance.interceptors.response.use(
     response => {
       nprogress.done()
-      return response;
+      return response.data.data;
     },
     error => {
       return Promise.reject(error);

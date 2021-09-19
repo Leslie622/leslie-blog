@@ -4,6 +4,7 @@ Vue.use(VueRouter)
 
 // 异步组件
 const Home = () => import('../views/home')
+const Blog = () => import('../views/blog')
 
 const routes = [
   {
@@ -15,9 +16,14 @@ const routes = [
     redirect: "/Home"
   },
   {
-    path: "/Home",
+    path: "/home",
     name: "home",
     component: Home
+  },
+  {
+    path: "/blog",
+    name: "blog",
+    component: Blog
   }
 ]
 

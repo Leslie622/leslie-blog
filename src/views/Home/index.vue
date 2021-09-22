@@ -32,33 +32,5 @@ export default {
 </script>
 
 <style  lang="scss" scoped>
-.wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  text-align: center;
-  background-image: $home-background-light;
-}
-
-.logo-content {
-  font-family: Monoton-Regular;
-  font-size: 8rem;
-}
-
-.nav-cotent {
-  padding: 2rem 0;
-  font-family: Arial;
-
-  .nav-item {
-    padding: 1rem;
-    font-size: 1.5rem;
-    color: #249ffd;
-    transition: all 0.3s;
-
-    &:hover {
-      opacity: 0.5;
-    }
-  }
-}
+@import "./index.scss"
 </style>

@@ -1,0 +1,18 @@
+.blog-archive {
+  padding: 0 10px;
+  width: 100%;
+  height: 300px;
+}
+
+.inner {
+  width: 100%;
+  height: 100px;
+  background-color: pink;
+}
+
+//窗口宽度小于等于1024时（也就是移动端）：版心100%
+@media screen and (max-width: 1024px) {
+  .blog-archive {
+    padding: 0 5px;
+  }
+}

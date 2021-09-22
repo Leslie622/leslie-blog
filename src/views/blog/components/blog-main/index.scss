@@ -1,0 +1,99 @@
+.blog-wrapper {
+  padding: 0 10px;
+  width: 100%;
+  // background-color: red;
+
+  .content {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+    flex-direction: column;
+    font-weight: 300;
+  }
+  .item {
+    flex: 1;
+    flex-direction: column;
+    box-shadow: $blog-boxShadow;
+    background-color: white;
+
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 6rem;
+      font-size: 1.4rem;
+      text-align: center;
+    }
+
+    .info {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: #999;
+
+      .info-item {
+        padding-bottom: 2px;
+        border-bottom: 1px dashed #777;
+        i,
+        .tag:not(:last-child) {
+          margin-right: 0.5rem;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .description {
+      box-sizing: border-box;
+      padding: 2rem;
+
+      .text {
+        padding: 1rem;
+        border-top: 1px solid #eee;
+        box-shadow: 1px 1px 2px rgb(240, 240, 240) inset;
+        color: #777;
+        background-color: rgba(238, 238, 238, 0.1);
+      }
+    }
+
+    .readBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 0 2rem;
+      .Btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 2rem;
+        border: 2px solid #222;
+        border-radius: 3px;
+        vertical-align: bottom;
+        font-size: 1rem;
+        text-align: center;
+        line-height: 2;
+        // background-color: gray;
+        cursor: pointer;
+
+        i {
+          margin-left: 0.3rem;
+          font-size: 1.4rem;
+          background-color: red;
+        }
+      }
+    }
+  }
+}
+
+//窗口宽度小于等于1024时（也就是移动端）：版心100%
+@media screen and (max-width: 1024px) {
+  .blog-wrapper {
+    padding: 0.5rem 0.5rem 0;
+
+    .item {
+      box-shadow: none;
+      border-bottom: 2px solid rgba(128, 128, 128, 0.2);
+    }
+  }
+}

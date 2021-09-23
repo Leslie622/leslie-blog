@@ -7,9 +7,9 @@ import { Message } from 'element-ui';
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-//默认配置 https://2cy.pub:8001/land
+//默认配置 https://zjx.pub:8001/land
 const defaultConfig = {
-  baseURL: "https://2cy.pub:8001/land/",
+  baseURL: "https://zjx.pub:8001/land/",
   timeout: 10 * 1000,
   withCredentials: true
 };
@@ -25,6 +25,7 @@ export function request(config) {
       return config;
     },
     error => {
+   
       return Promise.reject(error)
     });
 

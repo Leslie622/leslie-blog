@@ -124,7 +124,7 @@
     flex: 1;
     span {
       font-weight: bold;
-      color: #555;
+      color: #999;
     }
     p {
       padding-top: 0.4rem;
@@ -139,7 +139,7 @@
 
 .blog {
   display: flex;
-  min-height: 100vh;
+  min-height: calc(100vh - 80px);
 
   .blog-side {
     position: sticky;
@@ -221,7 +221,7 @@
     height: auto;
     max-height: 80px;
     overflow: hidden;
-    transition: max-height 0.1s;
+    transition: max-height 0.4s;
 
     .header-inner {
       width: 100%;

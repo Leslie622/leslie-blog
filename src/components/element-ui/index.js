@@ -4,6 +4,8 @@ import {
   Select,
   Option,
   Popover,
+  Timeline,
+  TimelineItem,
 } from 'element-ui';
 
 const ComponentList = [
@@ -11,6 +13,8 @@ const ComponentList = [
   Select,
   Option,
   Popover,
+  Timeline,
+  TimelineItem,
 ]
 
 if (ComponentList.length) {

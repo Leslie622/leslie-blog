@@ -45,11 +45,11 @@
           <div class="total">
             <div class="articleTotal">
               <span>12</span>
-              <p>文章总数</p>
+              <p>总文章数</p>
             </div>
             <div class="browseTotal">
               <span>153</span>
-              <p>阅读总数</p>
+              <p>总阅读数</p>
             </div>
           </div>
         </div>
@@ -153,8 +153,6 @@ export default {
     async categorySwitch(currentCategory) {
       const articleList = await articleListQuery(currentCategory);
       this.currentArticleList = articleList;
-      //好像是受到position sticky的影响，切换页面回不到顶部
-      window.scrollTo(0, 0);
     },
 
     headerSwitch() {

@@ -1,7 +1,17 @@
-.blog-wrapper {
+.blog-wrapper{
   padding: 0 10px;
   width: 100%;
-  // background-color: red;
+
+  .empty{
+    width: 100%;
+    height: 15rem;
+    line-height: 15rem;
+    text-align: center;
+    font-size: 1.3rem;
+    color: #999;
+    background-color: white;
+    box-shadow: $blog-boxShadow;
+  }
 
   .content {
     display: flex;
@@ -35,7 +45,7 @@
 
       .info-item {
         padding-bottom: 2px;
-        border-bottom: 1px dashed #777;
+        // border-bottom: 1px dashed #777;
         i,
         .tag:not(:last-child) {
           margin-right: 0.5rem;

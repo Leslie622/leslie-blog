@@ -1,8 +1,10 @@
 <template>
   <main class="blog-wrapper">
-    <article class="content">
+    <article class="content" v-if="articleList.length">
       <section class="item" v-for="item in articleList">
-        <div class="title">{{ item.title }}</div>
+        <div class="title">
+          {{ item.title }}
+        </div>
         <div class="info">
           <div class="info-item">
             <i class="iconfont icon-icon-"></i>
@@ -27,6 +29,7 @@
         </div>
       </section>
     </article>
+    <section v-else class="empty">该分类暂无文章，博主正在努力构思</section>
   </main>
 </template>
  

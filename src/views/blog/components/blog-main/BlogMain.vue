@@ -23,7 +23,7 @@
           <p class="text">{{ item.abs }}</p>
         </div>
         <div class="readBtn">
-          <div class="Btn">
+          <div class="Btn" @click="gotoDetails(item.id)">
             <span>阅读全文</span>
           </div>
         </div>
@@ -39,8 +39,12 @@ export default {
     articleList: Array,
   },
   methods: {
-    timeFormat(str) {
-      return str.substr(0, 10);
+    timeFormat(timeStr) {
+      return timeStr.substr(0, 10);
+    },
+    gotoDetails(articleID) {
+      let detail = this.$router.resolve({ path: `/detail/${articleID}` });
+      window.open(detail.href, "_blank");
     },
   },
 };

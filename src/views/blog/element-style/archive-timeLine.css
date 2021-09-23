@@ -1,5 +1,5 @@
 .filingTimeLine.el-timeline {
-  padding: 2rem 0 2rem 3rem;
+  padding: 2rem 0 2rem 4rem;
   font-size: 1em;
   color: #555;
   background-color: white;
@@ -19,21 +19,28 @@
   position: relative;
   padding: 20px 0;
   cursor: pointer;
+  transition: all 1s;
 }
 
 .filingTimeLine .el-timeline-item__content {
   color: #777;
+  transition: all 1s;
 }
 
 .el-timeline-item:hover .el-timeline-item__node {
-  background-color: black;
+  background-color: #222;
 }
 
 .filingTimeLine .el-timeline-item:hover::before {
-  border-bottom: 1px dashed #000;
-  color: black;
+  border-bottom: 1px dashed #222;
+
 }
-w .el-timeline-item__tail {
+
+.filingTimeLine .el-timeline-item:hover .el-timeline-item__content {
+  color: #222;
+}
+
+.el-timeline-item__tail {
   left: 2.5px;
   border-left: 3px solid #e4e7ed;
 }
@@ -43,7 +50,7 @@ w .el-timeline-item__tail {
   position: absolute;
   left: 4px;
   bottom: 0;
-  width: 90%;
+  width: 85%;
   height: 1px;
   border-bottom: 1px dashed #ccc;
   transition: all 1s;

@@ -6,6 +6,7 @@ import {
   Popover,
   Timeline,
   TimelineItem,
+  Loading,
 } from 'element-ui';
 
 const ComponentList = [
@@ -15,6 +16,7 @@ const ComponentList = [
   Popover,
   Timeline,
   TimelineItem,
+  Loading,
 ]
 
 if (ComponentList.length) {

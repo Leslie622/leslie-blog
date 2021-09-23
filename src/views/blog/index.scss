@@ -14,6 +14,7 @@
 .header {
   position: sticky;
   top: 0;
+  z-index: 999;
   height: 0;
 
   .header-inner {
@@ -67,7 +68,7 @@
 }
 
 .header.header-active {
-  // 这里的高度需要大于内容总高度，从而通过max-height实现不定高过渡动画
+  // 这里的高度需要大于头部内容总高度，从而通过max-height实现不定高过渡动画
   max-height: 390px;
   .Switchicon:nth-child(1)::before {
     transform: rotate(45deg);
@@ -139,7 +140,7 @@
 
 .blog {
   display: flex;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 338px);
 
   .blog-side {
     position: sticky;

@@ -98,9 +98,7 @@
             </div>
           </div>
         </aside>
-        <keep-alive>
           <router-view :articleList="currentArticleList"></router-view>
-        </keep-alive>
       </div>
     </div>
   </div>
@@ -152,7 +150,7 @@ export default {
 
     async categorySwitch(currentCategory) {
       const articleList = await articleListQuery(currentCategory);
-      this.currentArticleList = articleList;
+      this.currentArticleList = articleList.rows;
     },
 
     headerSwitch() {

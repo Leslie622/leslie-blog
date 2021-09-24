@@ -3,11 +3,11 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 // 异步组件
-const Home = () => import('../views/home')
-const Blog = () => import('../views/blog')
-const BlogMain = () => import('../views/blog/components/blog-main/BlogMain.vue')
-const BlogArchive = () => import('../views/blog/components/blog-archive/BlogArchive.vue')
-const Detail = () => import('../views/detail/index.vue')
+const Home = () => import('@/views/home')
+const Blog = () => import('@/views/blog')
+const BlogMain = () => import('@/views/blog/components/blog-main/BlogMain.vue')
+const BlogArchive = () => import('@/views/blog/components/blog-archive/BlogArchive.vue')
+const Detail = () => import('@/views/detail/index.vue')
 
 const routes = [
   {
@@ -42,7 +42,7 @@ const routes = [
     redirect:"/blogMain"
   },
   {
-    path:"/detail/:id",
+    path:"/detail/:articleID",
     name:"detail",
     component:Detail,
     props:true

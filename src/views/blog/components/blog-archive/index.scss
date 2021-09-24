@@ -1,20 +1,20 @@
-.blog-archive {
+.wrapper {
   padding: 0 10px;
   width: 100%;
 }
 
-.inner {
-  width: 100%;
+.content {
   box-shadow: $blog-boxShadow;
+  background-color: white;
 }
 
 //窗口宽度小于等于1024时（也就是移动端）：版心100%
 @media screen and (max-width: 1024px) {
-  .blog-archive {
+  .wrapper {
     padding: 0 5px;
   }
 
-  .inner{
+  .content{
     margin-top: 5px;
   }
 }

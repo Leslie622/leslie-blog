@@ -19,30 +19,33 @@
             <span v-for="tag in item.tag" class="tag">{{ tag }}</span>
           </div>
         </div>
-        <div class="description">
+        <div class="abstract">
           <p class="text">{{ item.abs }}</p>
         </div>
         <div class="readBtn">
-          <div class="Btn" @click="gotoDetails(item.id)">
+          <div class="Btn" @click="gotoDetail(item.id)">
             <span>阅读全文</span>
           </div>
         </div>
       </section>
     </article>
-    <section v-else class="empty">该分类暂无文章，博主正在努力构思</section>
+    <section v-else-if="!articleList.length" class="empty">该分类暂无文章，博主正在努力构思</section>
   </main>
 </template>
  
 <script>
 export default {
   props: {
-    articleList: Array,
+    articleList:{
+      type:Array,
+      default:[1,2]
+    },
   },
   methods: {
     timeFormat(timeStr) {
       return timeStr.substr(0, 10);
     },
-    gotoDetails(articleID) {
+    gotoDetail(articleID) {
       let detail = this.$router.resolve({ path: `/detail/${articleID}` });
       window.open(detail.href, "_blank");
     },
@@ -52,4 +55,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "./index.scss";
+
+
 </style>

@@ -1,4 +1,4 @@
-import { request } from "../axios";
+import { request } from "@/api/axios.js";
 
 export const articleCategoryQuery  = userId => request({
   method:"get",

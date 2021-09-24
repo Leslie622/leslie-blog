@@ -13,7 +13,7 @@
             </div>
             <div class="brand">LESLIE BLOG</div>
           </div>
-          <div class="select-wrapper">
+          <div class="articleCate-select">
             <el-select
               class="articleSelect"
               v-model="currentCategory"
@@ -31,13 +31,13 @@
               </el-option>
             </el-select>
           </div>
-          <ul class="menu">
+          <ul class="nav">
             <li
               v-for="(item, index) in linkList"
               :key="index"
               @click="headerSwitch"
             >
-              <router-link :to="item.path" class="menuItem">
+              <router-link :to="item.path" class="navItem">
                 <i :class="item.iconClass"></i>{{ item.value }}</router-link
               >
             </li>
@@ -69,7 +69,7 @@
                 target="_blank"
                 title="我的掘金主页"
               >
-                <i class="iconfont icon-juejin-logo"></i>
+                <i class="iconfont icon-juejin1"></i>
               </a>
             </div>
             <div>
@@ -98,7 +98,9 @@
             </div>
           </div>
         </aside>
+        <keep-alive>
           <router-view :articleList="currentArticleList"></router-view>
+        </keep-alive>
       </div>
     </div>
   </div>

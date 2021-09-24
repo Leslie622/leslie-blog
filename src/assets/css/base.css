@@ -1,8 +1,8 @@
 /* normalizeCSS */
-@import "./normalize/normalize.css";
+@import "~assets/css/normalize/index.css";
 
 /* 阿里图标库 */
-@import "../iconfont/index.css";
+@import "~assets/iconfont/index.css";
 
 /* 字体 */
 @font-face {

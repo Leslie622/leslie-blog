@@ -5,7 +5,7 @@
     element-loading-background="#fff"
   >
     <mavon-editor
-      v-if="articleContent"
+      :class="{ active: isLoading }"
       v-model="articleContent"
       :subfield="false"
       :editable="false"
@@ -18,11 +18,11 @@
 </template>
  
 <script>
-import { articleDetailQuery } from "../../api/module/detail";
+import { articleDetailQuery } from "@/api/module/detail";
 import { mavonEditor } from "mavon-editor";
 
 export default {
-  props: ["id"],
+  props: ["articleID"],
   components: {
     mavonEditor,
   },
@@ -32,16 +32,19 @@ export default {
       isLoading: true,
     };
   },
-
   created() {
     // 获取文章详情
     this.getArticleDetail();
   },
   methods: {
     async getArticleDetail() {
-      const result = await articleDetailQuery(this.id);
+      const result = await articleDetailQuery(this.articleID);
       this.articleContent = result.content;
-      //取消mask
+
+      this.removeLoadingMask();
+    },
+    //拿到数据半秒后移除mask
+    removeLoadingMask() {
       setTimeout(() => {
         this.isLoading = false;
       }, 500);

@@ -19,12 +19,11 @@
   position: relative;
   padding: 20px 0;
   cursor: pointer;
-  transition: all 1s;
 }
 
 .filingTimeLine .el-timeline-item__content {
   color: #777;
-  transition: all 1s;
+  transition: color 1s;
 }
 
 .el-timeline-item:hover .el-timeline-item__node {
@@ -33,7 +32,6 @@
 
 .filingTimeLine .el-timeline-item:hover::before {
   border-bottom: 1px dashed #222;
-
 }
 
 .filingTimeLine .el-timeline-item:hover .el-timeline-item__content {

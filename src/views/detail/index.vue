@@ -1,12 +1,18 @@
 <template>
-  <div class="wrapper">
+  <div
+    class="wrapper"
+    v-loading.fullscreen.lock="isLoading"
+    element-loading-background="#fff"
+  >
     <mavon-editor
+      v-if="articleContent"
       v-model="articleContent"
       :subfield="false"
       :editable="false"
       :toolbarsFlag="false"
       :transition="false"
       defaultOpen="preview"
+      class="articleContent"
     />
   </div>
 </template>
@@ -14,8 +20,6 @@
 <script>
 import { articleDetailQuery } from "../../api/module/detail";
 import { mavonEditor } from "mavon-editor";
-
-import { Loading } from "element-ui";
 
 export default {
   props: ["id"],
@@ -25,43 +29,28 @@ export default {
   data() {
     return {
       articleContent: "",
+      isLoading: true,
     };
   },
 
-  // beforeMount(){
-
-  //   const a = Loading.service({
-  //     background:"#fff"
-  //   })
-  //    console.log(a)
-  //   setTimeout(()=>{
-
-  //   },1000)
-  // },
-  async created() {
-    const result = await articleDetailQuery(this.id);
-
-    this.articleContent = result.content;
+  created() {
+    // 获取文章详情
+    this.getArticleDetail();
+  },
+  methods: {
+    async getArticleDetail() {
+      const result = await articleDetailQuery(this.id);
+      this.articleContent = result.content;
+      //取消mask
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 500);
+    },
   },
 };
 </script>
 
 <style lang='scss' scoped>
-.active {
-  opacity: 0;
-}
-@import "./mavon.scss"; // .wrapper {
-//   margin: 0 auto;
-//   width: 50%;
-
-//   .v-note-wrapper.v-note-panel .v-note-show{
-//     transition: none;
-//   }
-// }
-
-// @media screen and (max-width: 1024px) {
-//   .wrapper {
-//     width: 100%;
-//   }
-// }
+@import "./mavonEditor-style/mavon-editor.css";
+@import "./index.scss";
 </style>

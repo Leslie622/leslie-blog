@@ -1,6 +1,17 @@
 <template>
   <main class="blog-wrapper">
-    <article class="content" v-if="articleList.length">
+    <el-skeleton class="skeleton-wrapper" animated v-if="isSkeleton" :count="3">
+      <template slot="template">
+        <div class="skeleton">
+          <el-skeleton-item
+            class="skeleton-item"
+            variant="text"
+            v-for="item in 8"
+          />
+        </div>
+      </template>
+    </el-skeleton>
+    <article class="content" v-if="!isSkeleton && articleList.length">
       <section class="item" v-for="item in articleList">
         <div class="title">
           {{ item.title }}
@@ -29,18 +40,26 @@
         </div>
       </section>
     </article>
-    <section v-else-if="!articleList.length" class="empty">该分类暂无文章，博主正在努力构思</section>
+    <empty-state v-if="!isSkeleton && !articleList.length"></empty-state>
   </main>
 </template>
  
 <script>
+import EmptyState from "@/components/common/empty-state/EmptyState";
+
 export default {
+  components: {
+    EmptyState,
+  },
   props: {
-    articleList:{
-      type:Array,
-      default:[1,2]
+    articleList: {
+      type: Array,
+    },
+    isSkeleton: {
+      type: Boolean,
     },
   },
+
   methods: {
     timeFormat(timeStr) {
       return timeStr.substr(0, 10);
@@ -55,6 +74,4 @@ export default {
 
 <style lang="scss" scoped>
 @import "./index.scss";
-
-
 </style>

@@ -7,6 +7,8 @@ import {
   Timeline,
   TimelineItem,
   Loading,
+  Skeleton,
+  SkeletonItem,
 } from 'element-ui';
 
 const ComponentList = [
@@ -17,6 +19,8 @@ const ComponentList = [
   Timeline,
   TimelineItem,
   Loading,
+  Skeleton,
+  SkeletonItem,
 ]
 
 if (ComponentList.length) {

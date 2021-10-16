@@ -22,6 +22,8 @@ html {
 
   /* 消除移动端点击背景颜色 */
   -webkit-tap-highlight-color: transparent;
+    /*火狐下隐藏滚动条*/
+    scrollbar-width: none;
 }
 
 /* 移动端适配 */

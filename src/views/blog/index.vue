@@ -99,7 +99,10 @@
           </div>
         </aside>
         <keep-alive>
-          <router-view :articleList="currentArticleList"></router-view>
+          <router-view
+            :articleList="currentArticleList"
+            :isSkeleton="isSkeleton"
+          ></router-view>
         </keep-alive>
       </div>
     </div>
@@ -129,12 +132,18 @@ export default {
           iconClass: "iconfont icon-guidang",
         },
       ],
+      //控制子组件骨架屏
+      isSkeleton: true,
     };
   },
 
   created() {
     //获取文章分类并设置默认分类
-    this.getArticleCategory();
+    this.getArticleCategory().then(() => {
+      setTimeout(() => {
+        this.isSkeleton = false;
+      }, 500);
+    });
   },
   mounted() {
     //监听浏览器窗口大小
@@ -146,11 +155,21 @@ export default {
       const category = await articleCategoryQuery("8");
       this.articleCategory = category;
       //获取当前分类（默认第一项）和该分类文章列表
-      this.currentCategory = category[0].id;
+      //无缓存
+      if (window.localStorage.getItem("currentCategory") === null) {
+        this.currentCategory = category[0].id;
+      } else {
+        //有缓存
+        this.currentCategory = Number(
+          window.localStorage.getItem("currentCategory")
+        );
+      }
       this.categorySwitch(this.currentCategory);
     },
 
     async categorySwitch(currentCategory) {
+      //缓存
+      window.localStorage.setItem("currentCategory", currentCategory);
       const articleList = await articleListQuery(currentCategory);
       this.currentArticleList = articleList.rows;
     },

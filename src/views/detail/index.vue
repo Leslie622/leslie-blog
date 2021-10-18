@@ -1,23 +1,7 @@
 <template>
-  <div class="wrapper" element-loading-background="#fff">
-    <!-- <mavon-editor
-      :class="{ active: isLoading }"
-      v-model="articleContent"
-      :subfield="false"
-      :editable="false"
-      :toolbarsFlag="false"
-      :transition="false"
-      defaultOpen="preview"
-      class="articleContent"
-    /> -->
-    <div
-      v-for="anchor in titles"
-      :style="{ padding: `10px 0 10px ${anchor.indent * 20}px` }"
-      @click="handleAnchorClick(anchor)"
-    >
-      <a style="cursor: pointer">{{ anchor.title }}</a>
-    </div>
+  <div class="wrapper">
     <v-md-preview
+      v-show="isShow"
       :text="articleContent"
       class="articleContent"
       ref="preview"
@@ -34,35 +18,26 @@ export default {
   components: {},
   data() {
     return {
+      //文章内容
       articleContent: "",
-      isLoading: true,
-      titles: [],
+      //延迟显示
+      isShow: false,
+      //遮罩数据
+      loadingMask: null,
     };
   },
+  beforeCreate() {
+    console.log(this.$loading);
+  },
   created() {
+    //加载遮罩
+    this.createLoadingMask();
     // 获取文章详情
     this.getArticleDetail().then(() => {
-      const anchors =
-        this.$refs.preview.$el.querySelectorAll("h1,h2,h3,h4,h5,h6");
-      console.log(anchors);
-      const titles = Array.from(anchors).filter(
-        (title) => !!title.innerText.trim()
-      );
-
-      if (!titles.length) {
-        this.titles = [];
-        return;
-      }
-
-      const hTags = Array.from(
-        new Set(titles.map((title) => title.tagName))
-      ).sort();
-
-      this.titles = titles.map((el) => ({
-        title: el.innerText,
-        lineIndex: el.getAttribute("data-v-md-line"),
-        indent: hTags.indexOf(el.tagName),
-      }));
+      setTimeout(() => {
+        this.loadingMask.close();
+        this.isShow = true;
+      }, 500);
     });
   },
   mounted() {},
@@ -70,39 +45,21 @@ export default {
     async getArticleDetail() {
       const result = await articleDetailQuery(this.articleID);
       this.articleContent = result.content;
-
-      this.removeLoadingMask();
-    },
-    //拿到数据半秒后移除mask
-    removeLoadingMask() {
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 500);
     },
 
-    handleAnchorClick(anchor) {
-    const { preview } = this.$refs;
-    const { lineIndex } = anchor;
-
-    const heading = preview.$el.querySelector(
-      `[data-v-md-line="${lineIndex}"]`
-    );
-
-    if (heading) {
-      preview.scrollToTarget({
-        target: heading,
-        scrollContainer: window,
-        top: 60,
+    createLoadingMask() {
+      this.loadingMask = this.$loading({
+        lock: true,
+        text: "",
+        spinner: "",
+        background: "#fff",
       });
-    }
+    },
   },
-  },
-
-  
 };
 </script>
 
-<style lang='scss' scoped>
-@import "./mavonEditor-style/mavon-editor.css";
+<style lang='scss' >
 @import "./index.scss";
+
 </style>

@@ -1,6 +1,9 @@
 .blog-wrapper {
+  box-sizing: border-box;
   padding: 0 10px;
   width: 100%;
+  max-height: 100vh;
+  overflow: scroll;
 
   .content {
     display: flex;
@@ -45,7 +48,7 @@
       .text {
         padding: 1rem;
         border-top: 1px solid #eee;
-        box-shadow: 0px 0px 2px rgb(223, 223, 223) inset;
+        box-shadow: 0 0 2px rgb(223, 223, 223) inset;
         color: #777;
         background-color: rgba(238, 238, 238, 0.1);
       }
@@ -71,16 +74,16 @@
 
   //element骨架
   .skeleton-wrapper {
-    margin-top: 1rem;
+    margin-top: 3rem;
     .skeleton {
-      text-align: center;
       margin-bottom: 2rem;
+      text-align: center;
       .skeleton-item {
-        height: 1.3rem;
-        margin-bottom: .7rem;
-        background: linear-gradient(90deg,#e6e5e5 25%,#f5f5f5 37%,#e6e5e5 63%);
-        background-size: 400% 100%;
+        margin-bottom: 1rem;
         width: 90%;
+        height: 1.3rem;
+        background: linear-gradient(90deg, #e6e5e5 25%, #f5f5f5 37%, #e6e5e5 63%);
+        background-size: 400% 100%;
 
         &:nth-child(1) {
           width: 65%;
@@ -91,13 +94,20 @@
         }
 
         &:last-child {
-          height: 2.2rem;
           width: 8rem;
+          height: 2.2rem;
         }
       }
     }
+  }
 
-  
+  .pagination-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    background-color: red;
+    overflow: hidden;
   }
 }
 
@@ -105,10 +115,14 @@
 @media screen and (max-width: 1024px) {
   .blog-wrapper {
     padding: 0.5rem 0.5rem 0;
-
+    max-height: calc(100vh - 80px);
     .item {
       border-bottom: 2px solid rgba(128, 128, 128, 0.2);
       box-shadow: none;
+    }
+
+    .pagination {
+      transform: scale(0.9);
     }
   }
 }

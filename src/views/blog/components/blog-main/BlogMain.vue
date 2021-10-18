@@ -1,12 +1,18 @@
 <template>
   <main class="blog-wrapper">
-    <el-skeleton class="skeleton-wrapper" animated v-if="isSkeleton" :count="3">
+    <el-skeleton
+      class="skeleton-wrapper"
+      animated
+      v-if="isSkeleton"
+      :count="skeletonCount"
+    >
       <template slot="template">
         <div class="skeleton">
           <el-skeleton-item
             class="skeleton-item"
             variant="text"
-            v-for="item in 8"
+            v-for="(itemm, index) in 6"
+            :key="index"
           />
         </div>
       </template>
@@ -40,6 +46,7 @@
         </div>
       </section>
     </article>
+
     <empty-state v-if="!isSkeleton && !articleList.length"></empty-state>
   </main>
 </template>
@@ -59,7 +66,17 @@ export default {
       type: Boolean,
     },
   },
-
+  computed: {
+    //控制骨架屏count
+    skeletonCount() {
+      let articleListLength = this.articleList.length;
+      if (articleListLength >= 3) {
+        return 3;
+      } else {
+        return articleListLength;
+      }
+    },
+  },
   methods: {
     timeFormat(timeStr) {
       return timeStr.substr(0, 10);

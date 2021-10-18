@@ -11,7 +11,9 @@
                 <span class="Switchicon"></span>
               </div>
             </div>
-            <div class="brand">LESLIE BLOG</div>
+            <div class="brand">
+              <p>LESLIE BLOG</p>
+            </div>
           </div>
           <div class="articleCate-select">
             <el-select
@@ -78,8 +80,8 @@
                 target="_blank"
                 title="我的CSDN主页"
               >
-                <i class="iconfont icon-csdn"></i
-              ></a>
+                <i class="iconfont icon-csdn"></i>
+              </a>
             </div>
             <div>
               <el-popover placement="top-start" trigger="hover">
@@ -93,15 +95,19 @@
                 href="http://wpa.qq.com/msgrd?v=3&uin=416317444&site=qq&menu=yes"
                 title="使用QQ联系我"
               >
-                <i class="iconfont icon-ziyuan"></i
-              ></a>
+                <i class="iconfont icon-ziyuan"></i>
+              </a>
             </div>
           </div>
         </aside>
         <keep-alive>
           <router-view
+            ref="blogView"
             :articleList="currentArticleList"
             :isSkeleton="isSkeleton"
+            v-infinite-scroll="doLoadMore"
+            infinite-scroll-immediate-check="false"
+            infinite-scroll-distance="10"
           ></router-view>
         </keep-alive>
       </div>
@@ -119,6 +125,10 @@ export default {
       articleCategory: [],
       currentCategory: "",
       currentArticleList: [],
+      currentArticleCount: 0,
+      pageNum: 1,
+      pageSize: 10,
+      isChange: false,
       linkList: [
         { path: "/home", value: "主页", iconClass: "iconfont icon-zhuye-copy" },
         {
@@ -137,6 +147,12 @@ export default {
     };
   },
 
+  computed: {
+    cacheCategory() {
+      return window.localStorage.getItem("currentCategory");
+    },
+  },
+
   created() {
     //获取文章分类并设置默认分类
     this.getArticleCategory().then(() => {
@@ -145,6 +161,7 @@ export default {
       }, 500);
     });
   },
+
   mounted() {
     //监听浏览器窗口大小
     this.listenerWindowResize();
@@ -152,26 +169,55 @@ export default {
 
   methods: {
     async getArticleCategory() {
+      //没做登录，只能写死userID
       const category = await articleCategoryQuery("8");
       this.articleCategory = category;
-      //获取当前分类（默认第一项）和该分类文章列表
-      //无缓存
-      if (window.localStorage.getItem("currentCategory") === null) {
-        this.currentCategory = category[0].id;
-      } else {
-        //有缓存
-        this.currentCategory = Number(
-          window.localStorage.getItem("currentCategory")
-        );
-      }
+      //判断有无分类缓存
+      this.currentCategory = this.cacheCategory
+        ? Number(this.cacheCategory)
+        : category[0].id;
+      //切换到该分类
       this.categorySwitch(this.currentCategory);
     },
 
     async categorySwitch(currentCategory) {
-      //缓存
+      //回到顶部
+      this.$refs.blogView.$el.scrollTo(0, 0);
+      //缓存当前选择的分类
       window.localStorage.setItem("currentCategory", currentCategory);
-      const articleList = await articleListQuery(currentCategory);
+      //初始化页数
+      this.pageNum = 1;
+      //获取该分类数据
+      const articleList = await articleListQuery(
+        currentCategory,
+        this.pageNum,
+        this.pageSize
+      );
+      //获取该分类文章总数
+      this.currentArticleCount = articleList.count;
       this.currentArticleList = articleList.rows;
+    },
+
+    async LoadMore() {
+      const articleList = await articleListQuery(
+        this.currentCategory,
+        this.pageNum,
+        this.pageSize
+      );
+      this.currentArticleList.push(...articleList.rows);
+    },
+
+    //无限滚动加载更多
+    doLoadMore() {
+      console.log("b");
+      let pageNum = this.pageNum;
+      let maxPageNum = Math.ceil(this.currentArticleCount / this.pageSize);
+      //是否达到最大页数
+      if (pageNum < maxPageNum) {
+        console.log("a");
+        this.pageNum += 1;
+        this.LoadMore();
+      }
     },
 
     headerSwitch() {

@@ -10,6 +10,7 @@ const BlogArchive = () => import('@/views/blog/components/blog-archive/BlogArchi
 const Detail = () => import('@/views/detail/index.vue')
 
 const routes = [
+
   {
     path: "*",
     redirect: "/Home"
@@ -52,7 +53,7 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
 })
 
 export default router

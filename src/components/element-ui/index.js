@@ -9,6 +9,7 @@ import {
   Loading,
   Skeleton,
   SkeletonItem,
+  Image,
 } from 'element-ui';
 
 const ComponentList = [
@@ -21,6 +22,7 @@ const ComponentList = [
   Loading,
   Skeleton,
   SkeletonItem,
+  Image,
 ]
 
 if (ComponentList.length) {

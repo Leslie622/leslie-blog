@@ -12,6 +12,9 @@ import "@/components/element-ui/index"
 import infiniteScroll from 'vue-infinite-scroll'
 Vue.use(infiniteScroll)
 
+//图片地址
+Vue.prototype.$imgPrefix = 'https://mdw.oss-cn-hangzhou.aliyuncs.com/';
+
 new Vue({
   router,
   store,

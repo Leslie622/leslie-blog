@@ -19,10 +19,7 @@
             <el-select
               class="articleSelect"
               v-model="currentCategory"
-              @change="
-                categorySwitch(currentCategory);
-                headerSwitch();
-              "
+              @change="headerSwitch()"
             >
               <el-option
                 v-for="item in articleCategory"
@@ -101,14 +98,7 @@
           </div>
         </aside>
         <keep-alive>
-          <router-view
-            ref="blogView"
-            :articleList="currentArticleList"
-            :isSkeleton="isSkeleton"
-            v-infinite-scroll="doLoadMore"
-            infinite-scroll-immediate-check="false"
-            infinite-scroll-distance="10"
-          ></router-view>
+          <router-view></router-view>
         </keep-alive>
       </div>
     </div>
@@ -116,19 +106,16 @@
 </template>
  
 <script>
-import { articleCategoryQuery, articleListQuery } from "@/api/module/blog";
+import { articleCategoryQuery } from "@/api/module/blog";
 
 export default {
   data() {
     return {
+      //头部控制：布局
       headerActive: false,
+      //总文章分类
       articleCategory: [],
-      currentCategory: "",
-      currentArticleList: [],
-      currentArticleCount: 0,
-      pageNum: 1,
-      pageSize: 10,
-      isChange: false,
+      //路由项
       linkList: [
         { path: "/home", value: "主页", iconClass: "iconfont icon-zhuye-copy" },
         {
@@ -142,28 +129,33 @@ export default {
           iconClass: "iconfont icon-guidang",
         },
       ],
-      //控制子组件骨架屏
-      isSkeleton: true,
     };
   },
 
   computed: {
+    //缓存的分类
     cacheCategory() {
       return window.localStorage.getItem("currentCategory");
+    },
+    //当前文章分类
+    currentCategory: {
+      get: function () {
+        return this.$store.state.blog.category;
+      },
+      set: function (newCategory) {
+        this.$store.commit("setCurrentCategory", newCategory);
+        window.localStorage.setItem("currentCategory", newCategory);
+      },
     },
   },
 
   created() {
     //获取文章分类并设置默认分类
-    this.getArticleCategory().then(() => {
-      setTimeout(() => {
-        this.isSkeleton = false;
-      }, 500);
-    });
+    this.getArticleCategory();
   },
 
   mounted() {
-    //监听浏览器窗口大小
+    // 监听浏览器窗口大小
     this.listenerWindowResize();
   },
 
@@ -172,52 +164,11 @@ export default {
       //没做登录，只能写死userID
       const category = await articleCategoryQuery("8");
       this.articleCategory = category;
-      //判断有无分类缓存
-      this.currentCategory = this.cacheCategory
+      //判断是否有缓存的分类:没有则默认为第一项
+      let defaultCategory = this.cacheCategory
         ? Number(this.cacheCategory)
         : category[0].id;
-      //切换到该分类
-      this.categorySwitch(this.currentCategory);
-    },
-
-    async categorySwitch(currentCategory) {
-      //回到顶部
-      this.$refs.blogView.$el.scrollTo(0, 0);
-      //缓存当前选择的分类
-      window.localStorage.setItem("currentCategory", currentCategory);
-      //初始化页数
-      this.pageNum = 1;
-      //获取该分类数据
-      const articleList = await articleListQuery(
-        currentCategory,
-        this.pageNum,
-        this.pageSize
-      );
-      //获取该分类文章总数
-      this.currentArticleCount = articleList.count;
-      this.currentArticleList = articleList.rows;
-    },
-
-    async LoadMore() {
-      const articleList = await articleListQuery(
-        this.currentCategory,
-        this.pageNum,
-        this.pageSize
-      );
-      this.currentArticleList.push(...articleList.rows);
-    },
-
-    //无限滚动加载更多
-    doLoadMore() {
-      console.log("b");
-      let pageNum = this.pageNum;
-      let maxPageNum = Math.ceil(this.currentArticleCount / this.pageSize);
-      //是否达到最大页数
-      if (pageNum < maxPageNum) {
-        console.log("a");
-        this.pageNum += 1;
-        this.LoadMore();
-      }
+      this.$store.commit("setCurrentCategory", defaultCategory);
     },
 
     headerSwitch() {

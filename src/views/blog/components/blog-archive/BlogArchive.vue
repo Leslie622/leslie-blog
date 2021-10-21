@@ -1,10 +1,16 @@
 <template>
-  <main class="archive-wrapper">
+  <main
+    class="archive-wrapper"
+    ref="blogArchive"
+    infinite-scroll-distance="10"
+    v-infinite-scroll="doLoadMore"
+    infinite-scroll-immediate-check="false"
+  >
     <el-skeleton
       class="skeleton-wrapper"
       animated
       v-if="isSkeleton"
-      :count="skeletonCount"
+      :count="10"
     >
       <template slot="template">
         <div class="skeleton">
@@ -17,6 +23,7 @@
         </div>
       </template>
     </el-skeleton>
+
     <div class="content" v-if="!isSkeleton && articleList.length">
       <el-timeline class="filingTimeLine">
         <el-timeline-item
@@ -25,41 +32,90 @@
           :timestamp="item.create_time"
         >
           <div @click="gotoDetail(item.id)">
-            {{ item.title }}
+            <p class="title">{{ item.title }}</p>
+            <p class="viewCount">热度 : {{item.view}}</p>
           </div>
         </el-timeline-item>
       </el-timeline>
     </div>
+
     <empty-state v-else-if="!isSkeleton && !articleList.length"></empty-state>
   </main>
 </template>
  
 <script>
 import EmptyState from "@/components/common/empty-state/EmptyState";
+import { articleListQuery } from "@/api/module/blog";
+
 export default {
   components: {
     EmptyState,
   },
-  props: {
-    articleList: {
-      type: Array,
-    },
-    isSkeleton: {
-      type: Boolean,
+  data() {
+    return {
+      //控制骨架屏
+      isSkeleton: true,
+      //当前分类
+      category: 0,
+      //文章列表
+      articleList: [],
+      //文章数量
+      articleCount: 0,
+      //页码
+      pageNum: 1,
+      //页容量
+      pageSize: 15,
+    };
+  },
+  watch: {
+    // 分类改变，初始化数据
+    "$store.state.blog.category": function () {
+      this.initHandle();
     },
   },
-  computed: {
-    //控制骨架屏count
-    skeletonCount() {
-      let articleListLength = this.articleList.length;
-      if (articleListLength >= 8) {
-        return 8;
-      } else {
-        return articleListLength;
-      }
-    },
+
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.initHandle();
+    });
   },
   methods: {
+    async doArticleListQuery() {
+      const articleList = await articleListQuery(
+        this.category,
+        this.pageNum,
+        this.pageSize
+      );
+      return articleList;
+    },
+
+    async initHandle() {
+      //回到顶部并重置页码
+      this.$refs.blogArchive.scrollTo(0, 0);
+      this.pageNum = 1;
+      //获取文章列表数据
+      this.category = this.$store.state.blog.category;
+      if (this.category) {
+        const articleList = await this.doArticleListQuery();
+        this.articleList = articleList.rows;
+        this.articleCount = articleList.count;
+        //300ms后关闭骨架屏
+        setTimeout(() => {
+          this.isSkeleton = false;
+        }, 300);
+      }
+    },
+
+    async doLoadMore() {
+      let pageNum = this.pageNum;
+      let maxPageNum = Math.ceil(this.articleCount / this.pageSize);
+      if (pageNum < maxPageNum) {
+        this.pageNum += 1;
+        const moreArticleList = await this.doArticleListQuery();
+        this.articleList.push(...moreArticleList.rows);
+      }
+    },
+
     gotoDetail(articleID) {
       let detail = this.$router.resolve({ path: `/detail/${articleID}` });
       window.open(detail.href, "_blank");
@@ -70,5 +126,4 @@ export default {
 
 <style lang="scss" scoped>
 @import "./index.scss";
-@import "../../element-style/archive-timeLine.css";
 </style>

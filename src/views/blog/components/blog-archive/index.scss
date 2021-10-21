@@ -1,3 +1,5 @@
+@import "../../element-style/archive-timeLine.css";
+
 .archive-wrapper {
   padding: 0 10px;
   width: 100%;
@@ -30,6 +32,14 @@
   .content {
     box-shadow: $blog-boxShadow;
     background-color: white;
+
+    .title {
+      font-size: 1.2rem;
+    }
+    .viewCount {
+      margin-top: 8px;
+      font-size: 1rem;
+    }
   }
 }
 

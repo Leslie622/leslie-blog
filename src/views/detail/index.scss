@@ -10,41 +10,54 @@ li {
 
 .content {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
   margin: 0 auto;
-  width: 1100px;
+  width: 1200px;
   min-height: 100vh;
-  // background-color: white;
 
   .main {
     box-sizing: border-box;
-    padding: 20px 25px;
-    width: 800px;
+    padding: 0 2rem 2rem ;
+    width: 880px;
     background-color: white;
 
     .info {
       display: flex;
       margin-bottom: 1rem;
-      padding: 0.8rem 2rem 0;
       font-size: 1rem;
       box-shadow: 0 0 2px rgb(223, 223, 223) inset;
       color: #909090;
-      background-color: rgba(238, 238, 238, 0.1);
+      background-color: rgba(238, 238, 238, 0.3);
 
       .info-item {
         width: 50%;
-
         p {
-          margin-bottom: 0.8rem;
+          margin: 1rem;
         }
       }
+    }
+
+    .cover {
+      margin-bottom: 2rem;
     }
   }
 
   .sidebar {
-    width: 280px;
-    height: 100px;
-    background-color: yellow;
+    position: sticky;
+    top: 0;
+    width: 300px;
+    background-color: white;
+
+    .title {
+      padding: 1rem 1rem 0;
+      font-weight: bold;
+      font-size: 1.3rem;
+    }
+
+    .toc {
+      padding: 1rem 2rem;
+    }
   }
 }
 

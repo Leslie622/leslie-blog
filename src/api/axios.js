@@ -1,8 +1,5 @@
 import axios from 'axios'
 
-//element提示框
-import { Message } from 'element-ui';
-
 // 网络请求进度条
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'

@@ -6,7 +6,7 @@ import store from '@/store'
 Vue.config.productionTip = false
 
 // ElementUI-按需引入
-import "@/components/element-ui/index"
+import "@/components/import/element-ui/index"
 
 //element 无限滚动
 import infiniteScroll from 'vue-infinite-scroll'

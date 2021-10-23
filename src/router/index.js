@@ -5,8 +5,8 @@ Vue.use(VueRouter)
 // 异步组件
 const Home = () => import('@/views/home')
 const Blog = () => import('@/views/blog')
-const BlogMain = () => import('@/views/blog/components/blog-main/BlogMain.vue')
-const BlogArchive = () => import('@/views/blog/components/blog-archive/BlogArchive.vue')
+const BlogArticle = () => import('@/views/blog/components/article/BlogArticle.vue')
+const BlogArchive = () => import('@/views/blog/components/archive/BlogArchive.vue')
 const Detail = () => import('@/views/detail/index.vue')
 
 const routes = [
@@ -32,7 +32,7 @@ const routes = [
       {
         path: "/blogMain",
         name: "blogMain",
-        component: BlogMain
+        component: BlogArticle
       },
       {
         path: "/blogArchive",

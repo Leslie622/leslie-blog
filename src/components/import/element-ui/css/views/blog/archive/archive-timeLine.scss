@@ -1,0 +1,59 @@
+.filingTimeLine.el-timeline {
+  padding: 3rem 5rem;
+  font-size: 1em;
+}
+
+.filingTimeLine .el-timeline-item__node {
+  background-color: #999;
+  transition: all 1s;
+}
+
+.el-timeline-item__node--normal {
+  width: 10px;
+  height: 10px;
+}
+
+.filingTimeLine .el-timeline-item {
+  position: relative;
+  padding: 1.2rem 0;
+  cursor: pointer;
+}
+
+.filingTimeLine .el-timeline-item__content {
+  color: #777;
+  transition: color 1s;
+}
+
+.el-timeline-item:hover .el-timeline-item__node {
+  background-color: #222;
+}
+
+.filingTimeLine .el-timeline-item:hover::before {
+  border-bottom: 1px dashed #222;
+}
+
+.filingTimeLine .el-timeline-item:hover .el-timeline-item__content {
+  color: #222;
+}
+
+.el-timeline-item__tail {
+  left: 2px;
+  border-left: 4px solid #e4e7ed;
+  background-color: red;
+}
+
+.filingTimeLine .el-timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px dashed #ccc;
+  transition: border 1s;
+}
+
+.filingTimeLine .el-timeline-item:last-child::before {
+  display: none;
+}
+

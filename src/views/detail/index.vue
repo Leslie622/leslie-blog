@@ -59,7 +59,7 @@
 </template>
  
 <script>
-import "@/components/vue-markdown-editor/index";
+import "@/components/import/vue-markdown-editor/index";
 import { articleDetailQuery } from "@/api/module/detail";
 
 export default {
@@ -149,5 +149,6 @@ export default {
 
 <style lang='scss' >
 @import "./index.scss";
-@import "../../components/vue-markdown-editor/index.scss";
+@import "~components/import/vue-markdown-editor/index.scss";
+@import "~components/import/element-ui/css/views/detail/image.scss";
 </style>

@@ -1,0 +1,6 @@
+//某些html结构脱离了vue根组件，要改变只能套body
+body {
+  .el-select-dropdown {
+    box-shadow: $blog-boxShadow;
+  }
+}

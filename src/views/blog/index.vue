@@ -3,8 +3,8 @@
     <div class="content">
       <header class="header" :class="{ 'header-active': headerActive }">
         <div class="header-inner">
-          <div class="header-switch">
-            <div class="switch" @click="headerSwitch">
+          <div class="switch">
+            <div class="switch-btn" @click="headerSwitch">
               <div>
                 <span class="Switchicon"></span>
                 <span class="Switchicon"></span>
@@ -15,9 +15,9 @@
               <p>LESLIE BLOG</p>
             </div>
           </div>
-          <div class="articleCate-select">
+          <div class="category-select">
             <el-select
-              class="articleSelect"
+              class="select"
               v-model="currentCategory"
               @change="headerSwitch()"
             >
@@ -42,11 +42,11 @@
             </li>
           </ul>
           <div class="total">
-            <div class="articleTotal">
+            <div class="total-item articleTotal">
               <span>12</span>
               <p>总文章数</p>
             </div>
-            <div class="browseTotal">
+            <div class="total-item browseTotal">
               <span>153</span>
               <p>总阅读数</p>
             </div>
@@ -54,7 +54,7 @@
         </div>
       </header>
       <div class="blog">
-        <aside class="blog-side">
+        <aside class="sidebar">
           <div class="avatar">
             <img src="@/assets/img/avatar/avatar.jpg" />
           </div>
@@ -115,7 +115,7 @@ export default {
       headerActive: false,
       //总文章分类
       articleCategory: [],
-      //路由项
+      //路由
       linkList: [
         { path: "/home", value: "主页", iconClass: "iconfont icon-zhuye-copy" },
         {

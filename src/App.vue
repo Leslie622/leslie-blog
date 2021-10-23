@@ -12,4 +12,5 @@ export default {};
 
 <style lang="scss">
 @import "~assets/css/base.scss";
+@import "~components/import/element-ui/css/global.scss"
 </style>

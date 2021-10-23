@@ -1,5 +1,3 @@
-
-
 .wrapper {
   min-height: 100vh;
   background-color: #eee;
@@ -7,16 +5,12 @@
 
 .content {
   margin: 0 auto;
-
-  //版心
-  width: 1000px;
+  width: 1000px; //版心
 }
 
 .header {
   position: sticky;
   top: 0;
-
-  //目前最高层级
   z-index: 1;
   height: 0;
 
@@ -26,48 +20,121 @@
     width: 240px;
     box-shadow: $blog-boxShadow;
     background-color: white;
-  }
-
-  .header-switch {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 130px;
-    color: #fff;
-    background-color: #222;
 
     .switch {
-      position: absolute;
-
-      //>1024不显示，<1024变为 display: flex
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
-      left: 20px;
-      width: 40px;
-      height: 40px;
-      cursor: pointer;
+      height: 130px;
+      color: #fff;
+      background-color: #222;
 
-      .Switchicon {
-        display: block;
-        padding: 3px 0;
-        transition: transform 0.2s ease;
+      .switch-btn {
+        position: absolute;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        left: 20px;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+
+        .Switchicon {
+          display: block;
+          padding: 3px 0;
+          transition: transform 0.2s ease;
+        }
+
+        .Switchicon::before {
+          content: "";
+          display: block;
+          width: 28px;
+          height: 2px;
+          border-radius: 2px;
+          background-color: #fff;
+          transition: transform 0.2s ease 0.1s, background-color 0.3s ease;
+        }
       }
 
-      .Switchicon::before {
-        content: "";
-        display: block;
-        width: 28px;
-        height: 2px;
-        border-radius: 2px;
-        background-color: #fff;
-        transition: transform 0.2s ease 0.1s, background-color 0.3s ease;
+      .brand {
+        font-family: Arial;
+        font-size: 1.3rem;
       }
     }
 
-    .brand {
-      font-family: Arial;
-      font-size: 1.3rem;
+    .category-select {
+      display: flex;
+      justify-content: center;
+      padding: 0 0.5rem;
+
+      .select {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+        width: 100%;
+
+        &::before {
+          content: "已选择的文章分类";
+          position: absolute;
+          right: 30px;
+          z-index: 1;
+          font-size: 12px;
+          line-height: 40px;
+          color: #c0c4cc;
+          pointer-events: none;
+        }
+      }
+    }
+
+    .nav {
+      margin: 10px 0;
+
+      .navItem {
+        display: block;
+        width: 100%;
+        height: 40px;
+        font-size: 12px;
+        line-height: 40px;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+
+        i {
+          padding: 0 20px;
+          vertical-align: bottom;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .total {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      height: 46px;
+      border-top: 1px dashed #eee;
+      font-size: 12px;
+      text-align: center;
+
+      .total-item {
+        flex: 1;
+        color: #999;
+
+        span {
+          font-weight: bold;
+        }
+        p {
+          padding-top: 0.4rem;
+        }
+      }
+
+      div:not(:last-child) {
+        border-right: 1px solid #eee;
+      }
     }
   }
 }
@@ -75,7 +142,7 @@
 .header.header-active {
   // 这里的高度需要大于头部内容总高度，从而通过max-height实现不定高过渡动画
   max-height: 390px;
-  //switch的动画
+  // switch的动画
   .Switchicon:nth-child(1) {
     transform: translateY(8px);
   }
@@ -94,63 +161,10 @@
   }
 }
 
-.nav {
-  margin: 10px 0;
-
-  .navItem {
-    display: block;
-    width: 100%;
-    height: 40px;
-    font-size: 12px;
-    line-height: 40px;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: #f5f5f5;
-    }
-
-    i {
-      padding: 0 20px;
-      vertical-align: bottom;
-      font-size: 1.1rem;
-      line-height: 40px;
-    }
-  }
-}
-
-.total {
-  display: flex;
-  align-items: center;
-  padding: 10px 0;
-  height: 46px;
-  border-top: 1px dashed #eee;
-  font-size: 12px;
-  text-align: center;
-
-  .articleTotal,
-  .browseTotal {
-    flex: 1;
-    color: #999;
-    span {
-      font-weight: bold;
-    }
-    p {
-      padding-top: 0.4rem;
-    }
-  }
-
-  div:not(:last-child) {
-    border-right: 1px solid #eee;
-  }
-}
-
 .blog {
   display: flex;
 
-  //不能小于侧边栏的top,sticky会失效
-  min-height: 615px;
-
-  .blog-side {
+  .sidebar {
     position: sticky;
     display: flex;
     flex: 0 0 240px;
@@ -169,6 +183,7 @@
         width: 40%;
         border-radius: 50%;
         transition: transform 2s;
+
         &:hover {
           transform: rotate(1800deg);
         }
@@ -219,6 +234,7 @@
   .content {
     width: 100%;
   }
+
   .header {
     height: auto;
     max-height: 80px;
@@ -228,23 +244,23 @@
     .header-inner {
       width: 100%;
       box-shadow: none;
-    }
-
-    .header-switch {
-      height: 80px;
 
       .switch {
-        display: flex;
+        height: 80px;
+
+        .switch-btn {
+          display: flex;
+        }
+      }
+
+      .total {
+        border-bottom: 1px solid #a1a3a666;
       }
     }
   }
 
-  .total {
-    border-bottom: 1px solid #a1a3a666;
-  }
-
   .blog {
-    .blog-side {
+    .sidebar {
       display: none;
     }
   }

@@ -5,10 +5,11 @@
   //element骨架
   .skeleton-wrapper {
     margin-top: 4rem;
-
     padding-left: 5rem;
+
     .skeleton {
       margin-bottom: 2rem;
+
       .skeleton-item {
         margin-bottom: 0.3rem;
         width: 90%;
@@ -41,7 +42,6 @@
   }
 }
 
-//窗口宽度小于等于1024时（也就是移动端）：版心100%
 @media screen and (max-width: 1024px) {
   .archive-wrapper {
     padding: 0 5px;

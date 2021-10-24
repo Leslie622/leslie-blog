@@ -1,11 +1,12 @@
 <template>
   <main
-    class="blog-wrapper"
+    class="article-wrapper"
     ref="blogMain"
     v-infinite-scroll="doLoadMore"
     infinite-scroll-distance="1"
     infinite-scroll-immediate-check="false"
   >
+
     <el-skeleton class="skeleton-wrapper" animated v-if="isSkeleton" :count="3">
       <template slot="template">
         <div class="skeleton">
@@ -18,6 +19,7 @@
         </div>
       </template>
     </el-skeleton>
+
     <article class="content" v-if="!isSkeleton && articleList.length">
       <section class="item" v-for="item in articleList">
         <div class="title">
@@ -48,8 +50,8 @@
           >
           </el-image>
         </div>
-        <div class="readBtn">
-          <div class="Btn" @click="gotoDetail(item.id)">
+        <div class="read-btn">
+          <div class="btn" @click="gotoDetail(item.id)">
             <span>阅读全文</span>
           </div>
         </div>

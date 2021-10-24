@@ -17,7 +17,7 @@
           <el-skeleton-item
             class="skeleton-item"
             variant="text"
-            v-for="(itemm, index) in 2"
+            v-for="(item, index) in 2"
             :key="index"
           />
         </div>

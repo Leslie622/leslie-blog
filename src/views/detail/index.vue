@@ -10,8 +10,8 @@
         <div class="info">
           <div class="info-item">
             <div class="time">
-              <p>发布于：{{ article.create_time }}</p>
-              <p>更新于：{{ article.update_time }}</p>
+              <p>发布于：{{ timeFormat(article.create_time) }}</p>
+              <p>更新于：{{ timeFormat(article.update_time) }}</p>
             </div>
           </div>
           <div class="info-item">
@@ -42,7 +42,7 @@
         ></v-md-preview>
       </main>
 
-      <aside class="sidebar">
+      <aside class="sidebar" v-if="titles.length">
         <p class="title">目录</p>
         <div class="toc">
           <div
@@ -50,7 +50,9 @@
             :style="{ padding: `10px 0 10px ${anchor.indent * 20}px` }"
             @click="handleAnchorClick(anchor)"
           >
-            <a style="cursor: pointer">{{ anchor.title }}</a>
+            <li style="cursor: pointer">
+              <span> {{ anchor.title }}</span>
+            </li>
           </div>
         </div>
       </aside>
@@ -64,7 +66,7 @@ import { articleDetailQuery } from "@/api/module/detail";
 
 export default {
   props: ["articleID"],
-  components: {},
+
   data() {
     return {
       //文章信息
@@ -83,14 +85,15 @@ export default {
     this.createLoadingMask();
     // 获取文章详情
     this.getArticleDetail().then(() => {
+      // 生成目录
       this.createTOC();
+      // 关闭遮罩
       setTimeout(() => {
         this.loadingMask.close();
         this.isShow = true;
       }, 300);
     });
   },
-  mounted() {},
 
   methods: {
     async getArticleDetail() {
@@ -108,8 +111,7 @@ export default {
     },
 
     createTOC() {
-      const anchors =
-        this.$refs.preview.$el.querySelectorAll("h1,h2,h3,h4,h5,h6");
+      const anchors = this.$refs.preview.$el.querySelectorAll("h1,h2,h3,h4,h5,h6");
       const titles = Array.from(anchors).filter(
         (title) => !!title.innerText.trim()
       );
@@ -125,6 +127,12 @@ export default {
         lineIndex: el.getAttribute("data-v-md-line"),
         indent: hTags.indexOf(el.tagName),
       }));
+    },
+
+    timeFormat(timeStr) {
+      if (timeStr) {
+        return timeStr.substr(0, 10);
+      }
     },
 
     handleAnchorClick(anchor) {
@@ -151,4 +159,5 @@ export default {
 @import "./index.scss";
 @import "~components/import/vue-markdown-editor/index.scss";
 @import "~components/import/element-ui/css/views/detail/image.scss";
+
 </style>

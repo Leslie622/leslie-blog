@@ -1,10 +1,11 @@
-
-
 li {
   list-style: inherit;
 }
 
 .wrapper {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
   background-color: #eee;
 }
 
@@ -12,23 +13,23 @@ li {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin: 0 auto;
-  width: 1200px;
-  min-height: 100vh;
 
   .main {
     box-sizing: border-box;
-    padding: 0 2rem 2rem;
-    width: 880px;
+    margin-right: 1rem;
+    padding: 0 1.5rem 2rem;
+    width: 900px;
     background-color: white;
+
+ 
 
     .info {
       display: flex;
       margin-bottom: 1rem;
       font-size: 1rem;
       box-shadow: 0 0 2px rgb(223, 223, 223) inset;
-      color: #909090;
-      background-color: rgba(238, 238, 238, 0.3);
+      color: #888;
+      background-color: rgba(238, 238, 238, .3);
 
       .info-item {
         width: 50%;
@@ -61,17 +62,6 @@ li {
   }
 }
 
-.vuepress-markdown-body:not(.custom) {
-  padding: 0;
-}
-
-@media (max-width: 419px) {
-  .vuepress-markdown-body div[class*="v-md-pre-wrapper-"] {
-    margin: 0;
-    border-radius: 0;
-  }
-}
-
 .el-loading-spinner .path {
   stroke: #222;
 }
@@ -89,7 +79,8 @@ li {
     width: 100%;
 
     .main {
-      padding: 1rem;
+      margin-right: 0;
+      padding: .8rem;
       width: 100%;
     }
   }

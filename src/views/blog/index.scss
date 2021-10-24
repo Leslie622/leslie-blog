@@ -163,6 +163,7 @@
 
 .blog {
   display: flex;
+  min-height: 100vh;
 
   .sidebar {
     position: sticky;

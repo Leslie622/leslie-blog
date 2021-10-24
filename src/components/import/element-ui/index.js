@@ -10,6 +10,7 @@ import {
   Skeleton,
   SkeletonItem,
   Image,
+  Empty,
 } from 'element-ui';
 
 const ComponentList = [
@@ -23,6 +24,7 @@ const ComponentList = [
   Skeleton,
   SkeletonItem,
   Image,
+  Empty,
 ]
 
 if (ComponentList.length) {

@@ -43,7 +43,7 @@
           </ul>
           <div class="total">
             <div class="total-item articleTotal">
-              <span>12</span>
+              <span>{{ articleTotal }}</span>
               <p>总文章数</p>
             </div>
             <div class="total-item browseTotal">
@@ -137,6 +137,7 @@ export default {
     cacheCategory() {
       return window.localStorage.getItem("currentCategory");
     },
+
     //当前文章分类
     currentCategory: {
       get: function () {
@@ -146,6 +147,17 @@ export default {
         this.$store.commit("setCurrentCategory", newCategory);
         window.localStorage.setItem("currentCategory", newCategory);
       },
+    },
+
+    //总文章数
+    articleTotal() {
+      if (this.articleCategory.length !== 0) {
+        let total = 0;
+        this.articleCategory.forEach((item) => {
+          total += item.blogs.length;
+        });
+        return total;
+      }
     },
   },
 

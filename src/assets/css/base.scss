@@ -26,27 +26,31 @@ html {
 // 移动端适配
 @media screen and (min-width: 320px) {
   html {
-    font-size: 6px;
+    font-size: 10px;
   }
 }
+
 // [iphone678]320px
 @media screen and (min-width: 375px) {
   html {
     font-size: 11px;
   }
 }
+
 // [pixel2,一加]411px ｜ [iphone678P]414px
 @media screen and (min-width: 411px) {
-  html {
-    font-size: 12px;
-  }
-}
-// [ipad]768px [ipadPro]1024px
-@media screen and (min-width: 768px) {
   html {
     font-size: 14px;
   }
 }
+
+// [ipad]768px [ipadPro]1024px
+@media screen and (min-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+}
+
 // PC端窗口 ≥ 1500px
 @media screen and (min-width: 1600px) {
   html {

@@ -1,6 +1,3 @@
-import { request } from "@/api/axios.js";
+import { get } from "@/api/axios.js";
 
-export const articleDetailQuery = articleID => request({
-  method:"get",
-  url:`blog/detail?id=${articleID}`
-})
+export const articleDetailQuery = articleID => get(`blog/detail?id=${articleID}`)

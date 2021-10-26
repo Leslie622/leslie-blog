@@ -1,11 +1,8 @@
-import { request } from "@/api/axios.js";
+import { get } from "@/api/axios.js";
 
-export const articleCategoryQuery  = userId => request({
-  method:"get",
-  url:`blog/category/query?user_id=${userId}`,
-})
 
-export const articleListQuery = (cateId,pageNum,pageSize) => request({
-  method:"get",
-  url:`blog/query/withcategory?cate_id=${cateId}&pageNum=${pageNum}&pageSize=${pageSize}`
-})
+// 全部分类
+export const articleCategoryQuery = userId => get(`blog/category/query?user_id=${userId}`);
+
+// 文章列表
+export const articleListQuery = (cateId,pageNum,pageSize) => get(`blog/query/withcategory?cate_id=${cateId}&pageNum=${pageNum}&pageSize=${pageSize}`);

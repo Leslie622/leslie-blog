@@ -5,7 +5,7 @@
 
 .content {
   margin: 0 auto;
-  width: 1000px; //版心
+  width: 1200px; //版心
 }
 
 .header {
@@ -15,11 +15,15 @@
   height: 0;
 
   .header-inner {
-    display: flex;
-    flex-direction: column;
     width: 240px;
-    box-shadow: $blog-boxShadow;
-    background-color: white;
+    font-size: 12px;
+
+    //组块
+    .block {
+      margin-bottom: 10px;
+      box-shadow: $blog-boxShadow;
+      background-color: white;
+    }
 
     .switch {
       display: flex;
@@ -65,14 +69,10 @@
     .category-select {
       display: flex;
       justify-content: center;
-      padding: 0 0.5rem;
+      padding: 10px 0.5rem;
 
       .select {
         position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 10px;
         width: 100%;
 
         &::before {
@@ -89,13 +89,8 @@
     }
 
     .nav {
-      margin: 10px 0;
-
       .navItem {
         display: block;
-        width: 100%;
-        height: 40px;
-        font-size: 12px;
         line-height: 40px;
         transition: background-color 0.3s;
 
@@ -114,16 +109,14 @@
     .total {
       display: flex;
       align-items: center;
-      padding: 10px 0;
+      padding: 5px 0;
       height: 46px;
       border-top: 1px dashed #eee;
-      font-size: 12px;
       text-align: center;
 
       .total-item {
         flex: 1;
         color: #999;
-
         span {
           font-weight: bold;
         }
@@ -136,12 +129,61 @@
         border-right: 1px solid #eee;
       }
     }
+
+    .avatar {
+      padding: 15px 0;
+      text-align: center;
+
+      img {
+        width: 40%;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 2s;
+
+        &:hover {
+          transform: rotate(1800deg);
+        }
+      }
+    }
+
+    .motto {
+      padding: 0 1rem;
+      font-size: 13px;
+      text-align: center;
+      color: #999;
+    }
+
+    .links-of-author {
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+
+      div {
+        margin: 0 2%;
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        text-align: center;
+        line-height: 30px;
+
+        &:hover {
+          background-color: #eee;
+        }
+
+        i {
+          color: #999;
+          &.icon-juejin1 {
+            font-size: 18px;
+          }
+        }
+      }
+    }
   }
 }
 
 .header.header-active {
   // 这里的高度需要大于头部内容总高度，从而通过max-height实现不定高过渡动画
-  max-height: 390px;
+  max-height: 408px;
   // switch的动画
   .Switchicon:nth-child(1) {
     transform: translateY(8px);
@@ -162,76 +204,21 @@
 }
 
 .blog {
-  display: flex;
-  min-height: 100vh;
+  margin-left: 240px;
 
-  .sidebar {
-    position: sticky;
-    display: flex;
-    flex: 0 0 240px;
-    flex-direction: column;
-    top: 397px;
-    height: 218px;
-    text-align: center;
-    box-shadow: $blog-boxShadow;
-    background-color: white;
-
-    .avatar {
-      margin: 20px 0;
-      cursor: pointer;
-
-      img {
-        width: 40%;
-        border-radius: 50%;
-        transition: transform 2s;
-
-        &:hover {
-          transform: rotate(1800deg);
-        }
-      }
-    }
-
-    .motto {
-      padding: 0 1rem;
-      font-size: 13px;
-      color: #999;
-    }
-
-    .links-of-author {
-      display: flex;
-      justify-content: center;
-      margin-top: 25px;
-
-      div {
-        margin: 0 5px;
-        width: 30px;
-        height: 30px;
-        border-radius: 5px;
-        line-height: 30px;
-
-        &:hover {
-          background-color: #eee;
-        }
-
-        i {
-          color: #999;
-          &.icon-juejin1 {
-            font-size: 18px;
-          }
-        }
-      }
-    }
-  }
 }
 
-//窗口宽度大于1600px：版心百分比伸缩
-@media screen and (min-width: 1600px) {
-  .content {
-    width: 62%;
-  }
-}
-//窗口宽度小于等于1024时（也就是移动端）：版心100%
+// ========响应式========
+
+//窗口宽度小于1024px：版心缩小
 @media screen and (max-width: 1024px) {
+  .content {
+    width: 1024px;
+  }
+}
+
+//窗口宽度小于1000时：版心100%
+@media screen and (max-width: 1000px) {
   .content {
     width: 100%;
   }
@@ -244,25 +231,29 @@
 
     .header-inner {
       width: 100%;
-      box-shadow: none;
+
+      .block {
+        box-shadow: none;
+        margin-bottom: 0;
+      }
 
       .switch {
         height: 80px;
-
         .switch-btn {
           display: flex;
         }
       }
 
-      .total {
-        border-bottom: 1px solid #a1a3a666;
+      .avatar,
+      .motto {
+        display: none;
       }
     }
   }
 
   .blog {
-    .sidebar {
-      display: none;
-    }
+    margin-left: 0;
+    // height: calc(100vh - 80px);
+    // min-height: auto;
   }
 }

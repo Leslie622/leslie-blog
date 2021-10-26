@@ -2,7 +2,6 @@
 .article-wrapper {
   box-sizing: border-box;
   padding: 0 10px;
-  width: 100%;
   max-height: 100vh;
   overflow: scroll;
 
@@ -106,8 +105,7 @@
   }
 }
 
-//窗口宽度小于等于1024时（也就是移动端）：版心100%
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1000px) {
   .article-wrapper {
     padding: 0.5rem 0.5rem 0;
     max-height: calc(100vh - 80px);

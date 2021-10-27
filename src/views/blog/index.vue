@@ -20,7 +20,7 @@
               <el-select
                 class="select"
                 v-model="currentCategory"
-                @change="headerSwitch()"
+                @change="cache(),headerSwitch()"
               >
                 <el-option
                   v-for="item in articleCategory"
@@ -103,7 +103,7 @@
       </header>
       <div class="blog">
         <keep-alive>
-          <router-view></router-view>
+          <router-view :category="currentCategory"></router-view>
         </keep-alive>
       </div>
     </div>
@@ -120,6 +120,8 @@ export default {
       headerActive: false,
       //总文章分类
       articleCategory: [],
+      //当前文章分类
+      currentCategory: "",
       //路由
       linkList: [
         { path: "/home", value: "主页", iconClass: "iconfont icon-zhuye-copy" },
@@ -144,15 +146,15 @@ export default {
     },
 
     //当前文章分类
-    currentCategory: {
-      get: function () {
-        return this.$store.state.blog.category;
-      },
-      set: function (newCategory) {
-        this.$store.commit("setCurrentCategory", newCategory);
-        window.localStorage.setItem("currentCategory", newCategory);
-      },
-    },
+    // currentCategory: {
+    //   get: function () {
+    //     return this.$store.state.blog.category;
+    //   },
+    //   set: function (newCategory) {
+    //     this.$store.commit("setCurrentCategory", newCategory);
+    //     window.localStorage.setItem("currentCategory", newCategory);
+    //   },
+    // },
 
     //总文章数
     articleTotal() {
@@ -168,9 +170,11 @@ export default {
     },
   },
 
+  
+
   created() {
     //获取文章分类并设置默认分类
-    this.getArticleCategory();
+    this.getAllCategory();
   },
 
   mounted() {
@@ -179,16 +183,21 @@ export default {
   },
 
   methods: {
-    async getArticleCategory() {
-      //没做登录，只能写死userID
-
+    async getAllCategory() {
+      //没做登录，写死userID:8
       const category = await articleCategoryQuery("8");
       this.articleCategory = category;
       //判断是否有缓存的分类:没有则默认为第一项
       let defaultCategory = this.cacheCategory
         ? Number(this.cacheCategory)
         : category[0].id;
-      this.$store.commit("setCurrentCategory", defaultCategory);
+      this.currentCategory = defaultCategory
+    },
+
+
+
+    cache(){
+      window.localStorage.setItem("currentCategory",this.currentCategory)
     },
 
     headerSwitch() {

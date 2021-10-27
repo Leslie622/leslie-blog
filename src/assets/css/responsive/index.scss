@@ -3,7 +3,7 @@
 *    手机：
 *      320px:[iPhone4]
 *      375px:[iPhone678,iPhoneX]
-*      414px:[Pixel2]
+*      411px:[Pixel2]
 *      414px:[iPhone678p,oneplus7p]
 *    小平板：
 *     768px:[iPad]
@@ -13,7 +13,6 @@
 *      1400px
 *
 */ 
-
 
 // ======字体适配======
 // 逻辑像素 ≥ 320px
@@ -31,7 +30,7 @@
 }
 
 // 逻辑像素 ≥ 410px
-@media screen and (min-width: 410px) {
+@media screen and (min-width: 411px) {
   html {
     font-size: 12px;
   }

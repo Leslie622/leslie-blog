@@ -33,7 +33,7 @@
         >
           <div @click="gotoDetail(item.id)">
             <p class="title">{{ item.title }}</p>
-            <p class="viewCount">热度 : {{item.view}}</p>
+            <p class="viewCount">热度 : {{ item.view }}</p>
           </div>
         </el-timeline-item>
       </el-timeline>
@@ -51,34 +51,37 @@ export default {
   components: {
     EmptyState,
   },
+  props: ["category"],
   data() {
     return {
-      //控制骨架屏
+      // 控制骨架屏
       isSkeleton: true,
-      //当前分类
-      category: 0,
-      //文章列表
+      // 文章列表
       articleList: [],
-      //文章数量
+      // 总文章数量
       articleCount: 0,
-      //页码
+      // 页码
       pageNum: 1,
-      //页容量
+      // 页容量
       pageSize: 15,
     };
   },
   watch: {
-    // 分类改变，初始化数据
-    "$store.state.blog.category": function () {
+    // 获取到分类再填充数据
+    category: function () {
       this.initHandle();
     },
   },
 
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.initHandle();
+      //获取到分类才填充数据
+      if (vm.category) {
+        vm.initHandle();
+      }
     });
   },
+
   methods: {
     async doArticleListQuery() {
       const articleList = await articleListQuery(
@@ -93,17 +96,16 @@ export default {
       //回到顶部并重置页码
       this.$refs.blogArchive.scrollTo(0, 0);
       this.pageNum = 1;
+
       //获取文章列表数据
-      this.category = this.$store.state.blog.category;
-      if (this.category) {
-        const articleList = await this.doArticleListQuery();
-        this.articleList = articleList.rows;
-        this.articleCount = articleList.count;
-        //300ms后关闭骨架屏
-        setTimeout(() => {
-          this.isSkeleton = false;
-        }, 300);
-      }
+      const articleList = await this.doArticleListQuery();
+      this.articleList = articleList.rows;
+      this.articleCount = articleList.count;
+
+      //300ms后关闭骨架屏
+      setTimeout(() => {
+        this.isSkeleton = false;
+      }, 300);
     },
 
     async doLoadMore() {

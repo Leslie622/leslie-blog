@@ -228,6 +228,7 @@
     max-height: 80px;
     overflow: hidden;
     transition: max-height 0.4s;
+    box-shadow: $blog-boxShadow;
 
     .header-inner {
       width: 100%;

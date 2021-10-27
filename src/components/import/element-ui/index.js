@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import {
+  Message,
   Button,
   Select,
   Option,
@@ -30,3 +31,6 @@ const ComponentList = [
 if (ComponentList.length) {
   ComponentList.forEach(Component => Vue.use(Component))
 }
+
+//全局使用message
+Vue.prototype.$message = Message

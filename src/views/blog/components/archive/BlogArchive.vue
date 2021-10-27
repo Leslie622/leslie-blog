@@ -63,7 +63,7 @@ export default {
       // 页码
       pageNum: 1,
       // 页容量
-      pageSize: 15,
+      pageSize: 10,
     };
   },
   watch: {

@@ -1,6 +1,25 @@
-//某些html结构脱离了vue根组件，要改变只能套body
+/*
+*  某些html结构脱离了vue根组件
+*/
 body {
+  // ====== 选择器下拉框相关 ======
   .el-select-dropdown {
     box-shadow: $blog-boxShadow;
+  }
+
+  .el-select-dropdown__item.selected {
+    font-weight: bold;
+    color: #d24d57;
+  }
+
+  .el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+#app {
+  // ====== 选择器相关 ======
+  .el-select .el-input.is-focus .el-input__inner, .el-select .el-input__inner:focus {
+    border-color: #DCDFE6;
   }
 }

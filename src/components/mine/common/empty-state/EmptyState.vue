@@ -11,7 +11,6 @@ export default {};
 <style lang='scss' scoped>
 .empty {
   box-sizing: border-box;
-  margin-bottom: 10px;
   font-size: 1.3rem;
   text-align: center;
   box-shadow: $blog-boxShadow;

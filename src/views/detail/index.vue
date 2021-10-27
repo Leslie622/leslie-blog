@@ -38,6 +38,7 @@
         <v-md-preview
           :text="article.content"
           class="articleContent"
+          @copy-code-success="handleCopyCodeSuccess"
           ref="preview"
         ></v-md-preview>
       </main>
@@ -111,7 +112,8 @@ export default {
     },
 
     createTOC() {
-      const anchors = this.$refs.preview.$el.querySelectorAll("h1,h2,h3,h4,h5,h6");
+      const anchors =
+        this.$refs.preview.$el.querySelectorAll("h1,h2,h3,h4,h5,h6");
       const titles = Array.from(anchors).filter(
         (title) => !!title.innerText.trim()
       );
@@ -150,6 +152,14 @@ export default {
           top: 60,
         });
       }
+    },
+
+    handleCopyCodeSuccess() {
+      console.log("a")
+      this.$message({
+        message:"复制成功",
+        type:"success"
+      })
     },
   },
 };

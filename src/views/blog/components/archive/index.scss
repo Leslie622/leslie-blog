@@ -1,11 +1,12 @@
 .archive-wrapper {
+  box-sizing: border-box;
   padding: 0 10px;
   width: 100%;
 
   //element骨架
   .skeleton-wrapper {
-    margin-top: 4rem;
-    padding-left: 5rem;
+    margin-top: 2rem;
+    padding-left: 3rem;
 
     .skeleton {
       margin-bottom: 2rem;
@@ -42,12 +43,12 @@
   }
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1000px) {
   .archive-wrapper {
-    padding: 0 5px;
+    padding: 5px;
 
     .content {
-      margin-top: 5px;
+      box-shadow: none;
     }
   }
 }

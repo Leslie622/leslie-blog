@@ -16,4 +16,10 @@ VMdPreview.use(createLineNumbertPlugin());
 import createAlignPlugin from '@kangc/v-md-editor/lib/plugins/align';
 VMdPreview.use(createAlignPlugin());
 
+//代码复制
+import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
+import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
+VMdPreview.use(createCopyCodePlugin());
+
+
 Vue.use(VMdPreview);

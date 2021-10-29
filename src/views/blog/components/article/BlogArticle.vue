@@ -21,7 +21,7 @@
 
     <article class="content" v-if="!isSkeleton && articleList.length">
       <section class="item" v-for="item in articleList">
-        <div class="title">
+        <div class="title" :title="item.title">
           {{ item.title }}
         </div>
         <div class="info">
@@ -51,7 +51,7 @@
         </div>
       </section>
     </article>
-
+    
     <empty-state v-if="!isSkeleton && !articleList.length"></empty-state>
   </main>
 </template>
@@ -85,7 +85,6 @@ export default {
       this.initHandle();
     },
   },
-
 
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -136,8 +135,9 @@ export default {
       return timeStr.substr(0, 10);
     },
     gotoDetail(articleID) {
-      let detail = this.$router.resolve({ path: `/detail/${articleID}` });
-      window.open(detail.href, "_blank");
+      // let detail = ;
+      this.$router.push({ path: `/detail/${articleID}` });
+      // window.open(detail.href, "_blank");
     },
   },
 };

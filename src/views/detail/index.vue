@@ -51,7 +51,7 @@
             :style="{ padding: `10px 0 10px ${anchor.indent * 20}px` }"
             @click="handleAnchorClick(anchor)"
           >
-            <li style="cursor: pointer">
+            <li style="cursor: pointer" class="toc-item" :title="anchor.title">
               <span> {{ anchor.title }}</span>
             </li>
           </div>
@@ -165,9 +165,8 @@ export default {
 };
 </script>
 
-<style lang='scss' >
+<style  lang='scss' scoped>
 @import "./index.scss";
 @import "~components/import/vue-markdown-editor/index.scss";
 @import "~components/import/element-ui/css/views/detail/image.scss";
-
 </style>

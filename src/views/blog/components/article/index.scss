@@ -1,9 +1,10 @@
 // 滚动容器
 .article-wrapper {
   box-sizing: border-box;
-  padding: 0 10px;
+  padding: 0 10px 10px;
   max-height: 100vh;
   overflow: scroll;
+
 
   .content {
     display: flex;
@@ -14,6 +15,10 @@
       padding: 0 2rem;
       box-shadow: $blog-boxShadow;
       background-color: white;
+
+      &:last-child{
+        margin-bottom: 0;
+      }
 
       & > div {
         margin-bottom: 1.5rem;

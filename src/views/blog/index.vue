@@ -2,7 +2,10 @@
   <div class="wrapper">
     <div class="content">
       <header class="header" :class="{ 'header-active': headerActive }">
-        <div class="header-inner">
+      
+        
+    
+        <div class="header-inner  ">
           <div class="block">
             <div class="switch">
               <div class="switch-btn" @click="headerSwitch">
@@ -111,6 +114,9 @@
 </template>
  
 <script>
+
+
+
 import { articleCategoryQuery } from "@/api/module/blog";
 
 export default {
@@ -219,4 +225,5 @@ export default {
 <style lang="scss" scoped>
 @import "./index.scss";
 @import "~components/import/element-ui/css/views/blog/header-select.scss";
+
 </style>

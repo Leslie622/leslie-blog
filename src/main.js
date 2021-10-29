@@ -12,6 +12,9 @@ import "@/components/import/element-ui/index"
 import infiniteScroll from 'vue-infinite-scroll'
 Vue.use(infiniteScroll)
 
+//animate css动画库
+import 'animate.css'
+
 //图片地址
 Vue.prototype.$imgPrefix = 'https://mdw.oss-cn-hangzhou.aliyuncs.com/';
 

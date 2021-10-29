@@ -20,6 +20,7 @@ li {
     padding: 0 1.5rem 2rem;
     width: 900px;
     background-color: white;
+    box-shadow: $blog-boxShadow;
 
  
 
@@ -50,8 +51,9 @@ li {
   .sidebar {
     position: sticky;
     top: 0;
-    width: 300px;
+    width: 240px;
     background-color: white;
+    box-shadow: $blog-boxShadow;
 
     .title {
       padding: 1rem 1rem 0;
@@ -61,6 +63,12 @@ li {
 
     .toc {
       padding: 1rem 2rem;
+
+      .toc-item{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
 }

@@ -5,11 +5,16 @@
         <router-view class="transition-el"></router-view>
       </transition>
     </keep-alive>
+    <back-top></back-top>
   </div>
 </template>
 
 <script>
+import BackTop from "@/components/mine/common/back-top/BackTop.vue";
 export default {
+  components: {
+    BackTop,
+  },
   data() {
     return {
       transitionName: "",
@@ -28,7 +33,6 @@ export default {
     transitionHandle() {
       // 首次渲染不启用过渡
       if (this.notTransition) {
-        console.log("b");
         this.notTransition = false;
         return;
       }
@@ -36,10 +40,9 @@ export default {
     },
     popstateHandle() {
       // 后退时才启用后退过渡
-      console.log("a");
       window.addEventListener("popstate", () => {
         this.transitionName = "slideRight";
-        // 改变状态，下次启用前进过渡
+        // 下次启用前进过渡
         this.notTransition = true;
       });
     },
@@ -48,12 +51,11 @@ export default {
 </script>
 
 <style lang="scss">
-// beforeunload
 @import "~assets/css/base.scss";
 @import "~components/import/element-ui/css/global.scss";
 
 .transition-el {
-  transition: transform 0.4s ease-out; //设置动画
+  transition: transform 0.4s ease-out;
 }
 .slideLeft-enter,
 .slideRight-leave-active {

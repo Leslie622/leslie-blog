@@ -27,4 +27,11 @@ body {
   .el-empty__image{
     width: 10rem;
   }
+
+  // ====== 回到顶部相关 ======
+  .el-backtop{
+    background-color: transparent;
+    right: 2rem !important;
+    bottom: 2rem !important;
+  }
 }

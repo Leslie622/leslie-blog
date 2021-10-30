@@ -147,31 +147,6 @@ export default {
     cacheCategory() {
       return window.localStorage.getItem("currentCategory");
     },
-
-    //当前文章分类
-    // currentCategory: {
-    //   get: function () {
-    //     return this.$store.state.blog.category;
-    //   },
-    //   set: function (newCategory) {
-    //     this.$store.commit("setCurrentCategory", newCategory);
-    //     window.localStorage.setItem("currentCategory", newCategory);
-    //   },
-    // },
-
-    //总文章数
-    // articleTotal() {
-    //   if (this.articleCategory.length !== 0) {
-    //     let total = 0;
-    //     this.articleCategory.forEach((item) => {
-    //       total += item.blogs.length;
-    //     });
-
-    //     return total;
-    //   } else {
-    //     return 0;
-    //   }
-    // },
   },
 
   created() {
@@ -209,7 +184,7 @@ export default {
         views: 1530,
         duration: 2000,
         round: 1,
-        easing: "cubicBezier(.2,1,.2,1)",
+        easing: "easeOutQuint",
       });
     },
 

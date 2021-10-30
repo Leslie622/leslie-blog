@@ -93,17 +93,21 @@
         position: relative;
 
         &::before {
-          content: "👈";
+          content: "\e687";
           position: absolute;
-          top: -3px;
-          right: 60px;
-          font-size: .9rem;
-          animation: turn 0.3s forwards;
+          right: 15%;
+          font-family: "iconfont";
+          font-size: 1px;
+          color: #d24d57;
+          animation: turn 0.4s forwards;
         }
 
         @keyframes turn {
+          30% {
+            transform: scale(2.5);
+          }
           100% {
-            transform: translateX(30px) rotate(1turn);
+            transform: scale(2);
           }
         }
       }

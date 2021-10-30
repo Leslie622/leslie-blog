@@ -135,9 +135,9 @@ export default {
       return timeStr.substr(0, 10);
     },
     gotoDetail(articleID) {
-      // let detail = ;
-      this.$router.push({ path: `/detail/${articleID}` });
+      // let detail = this.$router.push({ path: `/detail/${articleID}` });
       // window.open(detail.href, "_blank");
+      this.$router.push({ path: `/detail/${articleID}` });
     },
   },
 };

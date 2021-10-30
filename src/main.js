@@ -15,6 +15,13 @@ Vue.use(infiniteScroll)
 //animate css动画库
 import 'animate.css'
 
+
+
+// import "animejs/lib/anime.min.js"
+
+
+
+
 //图片地址
 Vue.prototype.$imgPrefix = 'https://mdw.oss-cn-hangzhou.aliyuncs.com/';
 
@@ -23,3 +30,4 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+

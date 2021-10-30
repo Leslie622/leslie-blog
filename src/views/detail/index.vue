@@ -48,7 +48,7 @@
         <div class="toc">
           <div
             v-for="anchor in titles"
-            :style="{ padding: `10px 0 10px ${anchor.indent * 20}px` }"
+            :style="{ padding: `5px 0 5px ${anchor.indent * 15}px` }"
             @click="handleAnchorClick(anchor)"
           >
             <li style="cursor: pointer" class="toc-item" :title="anchor.title">

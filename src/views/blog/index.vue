@@ -2,10 +2,7 @@
   <div class="wrapper">
     <div class="content">
       <header class="header" :class="{ 'header-active': headerActive }">
-      
-        
-    
-        <div class="header-inner  ">
+        <div class="header-inner">
           <div class="block">
             <div class="switch">
               <div class="switch-btn" @click="headerSwitch">
@@ -23,7 +20,7 @@
               <el-select
                 class="select"
                 v-model="currentCategory"
-                @change="cache(),headerSwitch()"
+                @change="cache(), headerSwitch()"
               >
                 <el-option
                   v-for="item in articleCategory"
@@ -47,11 +44,11 @@
             </ul>
             <div class="total">
               <div class="total-item articleTotal">
-                <span>{{ articleTotal }}</span>
+                <span>{{ total.articleCount }}</span>
                 <p>总文章数</p>
               </div>
               <div class="total-item browseTotal">
-                <span>153</span>
+                <span>{{ total.views }}</span>
                 <p>总阅读数</p>
               </div>
             </div>
@@ -112,13 +109,9 @@
     </div>
   </div>
 </template>
- 
 <script>
-
-
-
 import { articleCategoryQuery } from "@/api/module/blog";
-
+import anime from "animejs";
 export default {
   data() {
     return {
@@ -142,6 +135,10 @@ export default {
           iconClass: "iconfont icon-guidang",
         },
       ],
+      total: {
+        articleCount: 0,
+        views: 0,
+      },
     };
   },
 
@@ -163,24 +160,25 @@ export default {
     // },
 
     //总文章数
-    articleTotal() {
-      if (this.articleCategory.length !== 0) {
-        let total = 0;
-        this.articleCategory.forEach((item) => {
-          total += item.blogs.length;
-        });
-        return total;
-      } else {
-        return 0;
-      }
-    },
-  },
+    // articleTotal() {
+    //   if (this.articleCategory.length !== 0) {
+    //     let total = 0;
+    //     this.articleCategory.forEach((item) => {
+    //       total += item.blogs.length;
+    //     });
 
-  
+    //     return total;
+    //   } else {
+    //     return 0;
+    //   }
+    // },
+  },
 
   created() {
     //获取文章分类并设置默认分类
-    this.getAllCategory();
+    this.getAllCategory().then(() => {
+      this.getTotalData()
+    });
   },
 
   mounted() {
@@ -197,13 +195,26 @@ export default {
       let defaultCategory = this.cacheCategory
         ? Number(this.cacheCategory)
         : category[0].id;
-      this.currentCategory = defaultCategory
+      this.currentCategory = defaultCategory;
     },
 
+    getTotalData(){
+      let articleCount = 0;
+      this.articleCategory.forEach((item) => {
+        articleCount += item.blogs.length;
+      });
+      anime({
+        targets: this.$data.total,
+        articleCount: articleCount,
+        views: 1530,
+        duration: 2000,
+        round: 1,
+        easing: "cubicBezier(.2,1,.2,1)",
+      });
+    },
 
-
-    cache(){
-      window.localStorage.setItem("currentCategory",this.currentCategory)
+     cache() {
+      window.localStorage.setItem("currentCategory", this.currentCategory);
     },
 
     headerSwitch() {
@@ -225,5 +236,4 @@ export default {
 <style lang="scss" scoped>
 @import "./index.scss";
 @import "~components/import/element-ui/css/views/blog/header-select.scss";
-
 </style>

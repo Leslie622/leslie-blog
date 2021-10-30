@@ -1,38 +1,40 @@
-.github-markdown-body {
-  padding: 0;
-  font-size: 1rem;
-}
-
-//感觉原样式字体过大，稍作修改
-.github-markdown-body h1 {
-  padding-bottom: 0.4em;
-  font-size: 1.8em;
-}
-.github-markdown-body h2 {
-  border-bottom: none;
-  font-size: 1.6em;
-}
-.github-markdown-body h2 {
-  font-size: 1.4em;
-}
-.github-markdown-body h3 {
-  font-size: 1.2em;
-}
-.github-markdown-body h4 {
-  font-size: 1em;
-}
-.github-markdown-body h5 {
-  font-size: 0.875em;
-}
-.github-markdown-body h6 {
-  font-size: 0.85em;
-  color: #6a737d;
-}
-
-
-@media screen and (max-width: 1000px) {
+::v-deep{
   .github-markdown-body {
     padding: 0;
-    font-size: 1.2rem;
+    font-size: 1rem;
+  }
+  
+  //感觉原样式字体过大，稍作修改
+  .github-markdown-body h1 {
+    padding-bottom: 0.4em;
+    font-size: 1.8em;
+  }
+  .github-markdown-body h2 {
+    border-bottom: none;
+    font-size: 1.6em;
+  }
+  .github-markdown-body h2 {
+    font-size: 1.4em;
+  }
+  .github-markdown-body h3 {
+    font-size: 1.2em;
+  }
+  .github-markdown-body h4 {
+    font-size: 1em;
+  }
+  .github-markdown-body h5 {
+    font-size: 0.875em;
+  }
+  .github-markdown-body h6 {
+    font-size: 0.85em;
+    color: #6a737d;
+  }
+  
+  
+  @media screen and (max-width: 1000px) {
+    .github-markdown-body {
+      padding: 0;
+      font-size: 1.2rem;
+    }
   }
 }

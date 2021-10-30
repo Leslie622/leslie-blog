@@ -26,10 +26,9 @@ export default {
   },
   methods: {
     transitionHandle() {
-   
       // 首次渲染不启用过渡
       if (this.notTransition) {
-           console.log("b")
+        console.log("b");
         this.notTransition = false;
         return;
       }
@@ -37,7 +36,7 @@ export default {
     },
     popstateHandle() {
       // 后退时才启用后退过渡
-      console.log("a")
+      console.log("a");
       window.addEventListener("popstate", () => {
         this.transitionName = "slideRight";
         // 改变状态，下次启用前进过渡

@@ -103,7 +103,7 @@
       </header>
       <div class="blog">
         <keep-alive>
-          <router-view :category="currentCategory"></router-view>
+          <router-view :category="currentCategory" class="publicWrapper" />
         </keep-alive>
       </div>
     </div>
@@ -152,7 +152,7 @@ export default {
   created() {
     //获取文章分类并设置默认分类
     this.getAllCategory().then(() => {
-      this.getTotalData()
+      this.getTotalData();
     });
   },
 
@@ -173,7 +173,7 @@ export default {
       this.currentCategory = defaultCategory;
     },
 
-    getTotalData(){
+    getTotalData() {
       let articleCount = 0;
       this.articleCategory.forEach((item) => {
         articleCount += item.blogs.length;
@@ -188,7 +188,7 @@ export default {
       });
     },
 
-     cache() {
+    cache() {
       window.localStorage.setItem("currentCategory", this.currentCategory);
     },
 

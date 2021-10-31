@@ -1,9 +1,9 @@
 <template>
   <main
     class="article-wrapper"
-    ref="blogMain"
+    ref="article"
     v-infinite-scroll="doLoadMore"
-    infinite-scroll-distance="1"
+    infinite-scroll-distance="200"
     infinite-scroll-immediate-check="false"
   >
     <el-skeleton class="skeleton-wrapper" animated v-if="isSkeleton" :count="3">
@@ -19,8 +19,8 @@
       </template>
     </el-skeleton>
 
-    <article class="content" v-if="!isSkeleton && articleList.length">
-      <section class="item" v-for="item in articleList">
+    <article class="content" v-if="!isSkeleton && articelInfo.list.length">
+      <section class="item" v-for="item in articelInfo.list">
         <div class="title" :title="item.title">
           {{ item.title }}
         </div>
@@ -51,70 +51,99 @@
         </div>
       </section>
     </article>
-    
-    <empty-state v-if="!isSkeleton && !articleList.length"></empty-state>
+
+    <empty-state v-if="!isSkeleton && !articelInfo.list.length"></empty-state>
+
+    <back-top targets=".article-wrapper" :visibilityHeight="1500"> </back-top>
   </main>
 </template>
  
 <script>
 import EmptyState from "@/components/mine/common/empty-state/EmptyState";
+import BackTop from "@/components/mine/common/back-top/BackTop.vue";
 import { articleListQuery } from "@/api/module/blog";
 
 export default {
   components: {
     EmptyState,
+    BackTop,
   },
   props: ["category"],
   data() {
     return {
       // 控制骨架屏
       isSkeleton: true,
-      // 文章列表
-      articleList: [],
-      // 总文章数量
-      articleCount: 0,
-      // 页码
-      pageNum: 1,
-      // 页容量
-      pageSize: 10,
+      scrollTop: "",
+
+      articelInfo: {
+        list: [],
+        count: 0,
+        pageNum: 1,
+        pageSize: 10,
+      },
+      // 组件切换缓存信息
+      articelCacheInfo: {
+        list: [],
+        pageNum: 1,
+        pageSize: 10,
+      },
     };
   },
   watch: {
     // 获取到分类再填充数据
-    category: function () {
+    category: function (newCategory, oldCategory) {
       this.initHandle();
+      console.log(newCategory, oldCategory);
     },
   },
 
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      //获取到分类才填充数据
-      if (vm.category) {
-        vm.initHandle();
-      }
-    });
+  created() {
+    function swapData(obj, newobj) {}
   },
 
+  mounted() {
+    this.$refs.article.addEventListener("scroll", this.getCacheScrollTop, true);
+  },
+
+  activated() {
+    console.log("a");
+    this.articelInfo.list = this.articelCacheInfo.list;
+    this.articelInfo.pageNum = this.articelCacheInfo.pageNum;
+    this.articelInfo.pageSize = this.articelCacheInfo.pageSize;
+    this.$refs.article.scrollTo(0, this.scrollTop);
+  },
+
+  deactivated() {
+    this.articelCacheInfo.list = this.articelInfo.list;
+    this.articelCacheInfo.pageNum = this.articelInfo.pageNum;
+    this.articelCacheInfo.pageSize = this.articelInfo.pageSize;
+  },
   methods: {
+    getCacheScrollTop(e) {
+      this.scrollTop = e.target.scrollTop;
+    },
+
     async doArticleListQuery() {
       const articleList = await articleListQuery(
         this.category,
-        this.pageNum,
-        this.pageSize
+        this.articelInfo.pageNum,
+        this.articelInfo.pageSize
       );
       return articleList;
     },
 
     async initHandle() {
-      //回到顶部并重置页码
-      this.$refs.blogMain.scrollTo(0, 0);
-      this.pageNum = 1;
+      //重置页码
+      this.articelInfo.pageNum = 1;
+      // console.log(this.scrollTop);
 
+      // console.dir(this.$refs.article);
       //获取文章列表数据
-      const articleList = await this.doArticleListQuery();
-      this.articleList = articleList.rows;
-      this.articleCount = articleList.count;
 
+      const articleList = await this.doArticleListQuery();
+      this.articelInfo.list = articleList.rows;
+      this.articelInfo.count = articleList.count;
+      this.$refs.article.scrollTo(0, 0);
       //300ms后关闭骨架屏
       setTimeout(() => {
         this.isSkeleton = false;
@@ -122,12 +151,14 @@ export default {
     },
 
     async doLoadMore() {
-      let pageNum = this.pageNum;
-      let maxPageNum = Math.ceil(this.articleCount / this.pageSize);
+      let pageNum = this.articelInfo.pageNum;
+      let maxPageNum = Math.ceil(
+        this.articelInfo.count / this.articelInfo.pageSize
+      );
       if (pageNum < maxPageNum) {
-        this.pageNum += 1;
+        this.articelInfo.pageNum += 1;
         const moreArticleList = await this.doArticleListQuery();
-        this.articleList.push(...moreArticleList.rows);
+        this.articelInfo.list.push(...moreArticleList.rows);
       }
     },
 

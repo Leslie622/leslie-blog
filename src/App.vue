@@ -55,7 +55,7 @@ export default {
 @import "~components/import/element-ui/css/global.scss";
 
 .transition-el {
-  transition: transform 0.4s ease-out;
+  transition: transform .3s ease-out;
 }
 .slideLeft-enter,
 .slideRight-leave-active {
@@ -66,7 +66,9 @@ export default {
   transform: translate(-100%, 0);
 }
 .slideLeft-enter-active,
-.slideRight-enter-active {
+.slideRight-enter-active,
+.slideRight-leave-active,
+.slideLeft-leave-active {
   position: absolute;
   top: 0;
   right: 0;

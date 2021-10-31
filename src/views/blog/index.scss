@@ -230,6 +230,13 @@
   margin-left: 240px;
 }
 
+.publicWrapper {
+  box-sizing: border-box;
+  padding: 0 10px 10px;
+  max-height: 100vh;
+  overflow: scroll;
+}
+
 // ========响应式========
 
 //窗口宽度小于1024px：版心缩小
@@ -276,5 +283,10 @@
 
   .blog {
     margin-left: 0;
+  }
+
+  .publicWrapper {
+    padding: 0.5rem;
+    max-height: calc(100vh - 80px);
   }
 }

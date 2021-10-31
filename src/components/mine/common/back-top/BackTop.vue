@@ -1,5 +1,10 @@
 <template>
-  <el-backtop :visibility-height="1500" ref="backtop" @click="backtop">
+  <el-backtop
+    :visibility-height="visibilityHeight"
+    ref="backtop"
+    @click="backtop"
+    :target="targets"
+  >
     <div><i class="iconfont icon-huidaodingbu"></i></div>
   </el-backtop>
 </template>
@@ -8,8 +13,23 @@
 import anime from "animejs";
 
 export default {
+  name:"BakcTop",
+  props: {
+    targets: {
+      type: String,
+      defalut: undefined,
+    },
+    visibilityHeight: {
+      type: Number,
+      defalut: 1000,
+    },
+  },
+
+  updated() {
+    console.log("b")
+  },
   methods: {
-    back() {
+    backtop() {
       anime({
         targets: this.$refs.backtop.$el,
         translateY: [{ value: -1000, duration: 1000 }],

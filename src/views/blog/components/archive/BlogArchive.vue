@@ -1,8 +1,7 @@
 <template>
   <main
     class="archive-wrapper"
-    ref="blogArchive"
-    infinite-scroll-distance="10"
+    infinite-scroll-distance="200"
     v-infinite-scroll="doLoadMore"
     infinite-scroll-immediate-check="false"
   >
@@ -37,6 +36,8 @@
           </div>
         </el-timeline-item>
       </el-timeline>
+ 
+      <back-top targets=".archive-wrapper" :visibilityHeight="300"> </back-top>
     </div>
 
     <empty-state v-else-if="!isSkeleton && !articleList.length"></empty-state>
@@ -46,10 +47,12 @@
 <script>
 import EmptyState from "@/components/mine/common/empty-state/EmptyState";
 import { articleListQuery } from "@/api/module/blog";
+import BackTop from "@/components/mine/common/back-top/BackTop.vue";
 
 export default {
   components: {
     EmptyState,
+    BackTop,
   },
   props: ["category"],
   data() {
@@ -93,8 +96,7 @@ export default {
     },
 
     async initHandle() {
-      //回到顶部并重置页码
-      this.$refs.blogArchive.scrollTo(0, 0);
+      //重置页码
       this.pageNum = 1;
 
       //获取文章列表数据

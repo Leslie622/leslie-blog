@@ -1,7 +1,8 @@
 <template>
   <main
     class="archive-wrapper"
-    infinite-scroll-distance="200"
+    ref="archive"
+    infinite-scroll-distance="10"
     v-infinite-scroll="doLoadMore"
     infinite-scroll-immediate-check="false"
   >
@@ -23,10 +24,10 @@
       </template>
     </el-skeleton>
 
-    <div class="content" v-if="!isSkeleton && articleList.length">
+    <div class="content" v-if="!isSkeleton && articelInfo.list.length">
       <el-timeline class="filingTimeLine">
         <el-timeline-item
-          v-for="(item, index) in articleList"
+          v-for="(item, index) in articelInfo.list"
           :key="index"
           :timestamp="item.create_time"
         >
@@ -36,11 +37,13 @@
           </div>
         </el-timeline-item>
       </el-timeline>
- 
-      <back-top targets=".archive-wrapper" :visibilityHeight="300"> </back-top>
     </div>
 
-    <empty-state v-else-if="!isSkeleton && !articleList.length"></empty-state>
+    <empty-state
+      v-else-if="!isSkeleton && !articelInfo.list.length"
+    ></empty-state>
+
+    <back-top targets=".archive-wrapper" :visibilityHeight="300"> </back-top>
   </main>
 </template>
  
@@ -54,75 +57,138 @@ export default {
     EmptyState,
     BackTop,
   },
-  props: ["category"],
+  props: {
+    category: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       // 控制骨架屏
       isSkeleton: true,
-      // 文章列表
-      articleList: [],
-      // 总文章数量
-      articleCount: 0,
-      // 页码
-      pageNum: 1,
-      // 页容量
-      pageSize: 10,
+      // 现存数据
+      articelInfo: {
+        list: [],
+        count: 0,
+        pageNum: 1,
+        pageSize: 10,
+        scrollTop: 0,
+      },
+      // 组件切换缓存数据
+      compToggleCacheInfo: {
+        list: [],
+        pageNum: 1,
+        pageSize: 10,
+        scrollTop: 0,
+      },
+      // 分类切换缓存数据
+      cateToggleCacheInfo: {},
     };
   },
   watch: {
-    // 获取到分类再填充数据
-    category: function () {
-      this.initHandle();
+    // 分类改变，检测是否存在缓存数据,否则初始化数据
+    category: function (newCate) {
+      let cacheInfo = this.cateToggleCacheInfo;
+      let isHavaCache = Object.keys(cacheInfo).includes(String(newCate));
+      if (isHavaCache) {
+        this.articelInfo = this.cateToggleCacheInfo[newCate];
+        this.$nextTick(() => {
+          this.$refs.archive.scrollTo(0, this.articelInfo.scrollTop);
+        });
+      } else {
+        this.initHandle();
+      }
     },
   },
+  mounted() {
+    this.listeningScrollTop();
+  },
 
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      //获取到分类才填充数据
-      if (vm.category) {
-        vm.initHandle();
-      }
-    });
+  activated() {
+    let isHavaCache = Boolean(this.compToggleCacheInfo.list.length);
+    if (isHavaCache) {
+      this.articelInfo.list = this.compToggleCacheInfo.list;
+      this.articelInfo.pageNum = this.compToggleCacheInfo.pageNum;
+      this.articelInfo.pageSize = this.compToggleCacheInfo.pageSize;
+      this.$refs.archive.scrollTo(0, this.compToggleCacheInfo.scrollTop);
+    } else {
+      this.initHandle();
+    }
+  },
+
+  deactivated() {
+    this.compToggleCacheInfo.list = this.articelInfo.list;
+    this.compToggleCacheInfo.pageNum = this.articelInfo.pageNum;
+    this.compToggleCacheInfo.pageSize = this.articelInfo.pageSize;
+    this.compToggleCacheInfo.scrollTop = this.articelInfo.scrollTop;
   },
 
   methods: {
+    // 依据分类缓存数据
+    cacheCateInfo() {
+      let cateToggleCacheInfo = this.cateToggleCacheInfo;
+      let category = this.category;
+      let scrollTop = this.articelInfo.scrollTop;
+      let articelInfo = this.articelInfo;
+      this.$set(cateToggleCacheInfo, category, {
+        scrollTop,
+        ...articelInfo,
+      });
+    },
+
     async doArticleListQuery() {
       const articleList = await articleListQuery(
         this.category,
-        this.pageNum,
-        this.pageSize
+        this.articelInfo.pageNum,
+        this.articelInfo.pageSize
       );
       return articleList;
     },
 
+    // 数据初始化
     async initHandle() {
+      let articelInfo = this.articelInfo;
       //重置页码
-      this.pageNum = 1;
-
+      articelInfo.pageNum = 1;
       //获取文章列表数据
-      const articleList = await this.doArticleListQuery();
-      this.articleList = articleList.rows;
-      this.articleCount = articleList.count;
-
+      const result = await this.doArticleListQuery();
+      articelInfo.list = result.rows;
+      articelInfo.count = result.count;
+      //回到顶部
+      this.$nextTick(() => {
+        this.$refs.archive.scrollTo(0, 0);
+      });
       //300ms后关闭骨架屏
       setTimeout(() => {
         this.isSkeleton = false;
       }, 300);
     },
 
+    // 加载更多
     async doLoadMore() {
-      let pageNum = this.pageNum;
-      let maxPageNum = Math.ceil(this.articleCount / this.pageSize);
+      let articelInfo = this.articelInfo;
+      let pageNum = articelInfo.pageNum;
+      let maxPageNum = Math.ceil(articelInfo.count / articelInfo.pageSize);
       if (pageNum < maxPageNum) {
-        this.pageNum += 1;
+        articelInfo.pageNum += 1;
         const moreArticleList = await this.doArticleListQuery();
-        this.articleList.push(...moreArticleList.rows);
+        articelInfo.list.push(...moreArticleList.rows);
       }
     },
 
+    listeningScrollTop() {
+      this.$refs.archive.addEventListener(
+        "scroll",
+        (e) => {
+          this.articelInfo.scrollTop = e.target.scrollTop;
+        },
+        true
+      );
+    },
+
     gotoDetail(articleID) {
-      let detail = this.$router.resolve({ path: `/detail/${articleID}` });
-      window.open(detail.href, "_blank");
+      this.$router.push({ path: `/detail/${articleID}` });
     },
   },
 };

@@ -68,59 +68,84 @@ export default {
     EmptyState,
     BackTop,
   },
-  props: ["category"],
+  props: {
+    category: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       // 控制骨架屏
       isSkeleton: true,
-      scrollTop: "",
-
+      // 现存数据
       articelInfo: {
         list: [],
         count: 0,
         pageNum: 1,
         pageSize: 10,
+        scrollTop: 0,
       },
-      // 组件切换缓存信息
-      articelCacheInfo: {
+      // 组件切换缓存数据
+      compToggleCacheInfo: {
         list: [],
         pageNum: 1,
         pageSize: 10,
+        scrollTop: 0,
       },
+      // 分类切换缓存数据
+      cateToggleCacheInfo: {},
     };
   },
   watch: {
-    // 获取到分类再填充数据
-    category: function (newCategory, oldCategory) {
-      this.initHandle();
-      console.log(newCategory, oldCategory);
+    // 分类改变，检测是否存在缓存数据,否则初始化数据
+    category: function (newCate) {
+      let cacheInfo = this.cateToggleCacheInfo;
+      let isHavaCache = Object.keys(cacheInfo).includes(String(newCate));
+      if (isHavaCache) {
+        this.articelInfo = this.cateToggleCacheInfo[newCate];
+        this.$nextTick(() => {
+          this.$refs.article.scrollTo(0, this.articelInfo.scrollTop);
+        });
+      } else {
+        this.initHandle();
+      }
     },
   },
-
-  created() {
-    function swapData(obj, newobj) {}
-  },
-
   mounted() {
-    this.$refs.article.addEventListener("scroll", this.getCacheScrollTop, true);
+    this.listeningScrollTop();
   },
 
   activated() {
-    console.log("a");
-    this.articelInfo.list = this.articelCacheInfo.list;
-    this.articelInfo.pageNum = this.articelCacheInfo.pageNum;
-    this.articelInfo.pageSize = this.articelCacheInfo.pageSize;
-    this.$refs.article.scrollTo(0, this.scrollTop);
+    let isHavaCache = Boolean(this.compToggleCacheInfo.list.length);
+    if (isHavaCache) {
+      this.articelInfo.list = this.compToggleCacheInfo.list;
+      this.articelInfo.pageNum = this.compToggleCacheInfo.pageNum;
+      this.articelInfo.pageSize = this.compToggleCacheInfo.pageSize;
+      this.$refs.article.scrollTo(0, this.compToggleCacheInfo.scrollTop);
+    } else {
+      this.initHandle();
+    }
   },
 
   deactivated() {
-    this.articelCacheInfo.list = this.articelInfo.list;
-    this.articelCacheInfo.pageNum = this.articelInfo.pageNum;
-    this.articelCacheInfo.pageSize = this.articelInfo.pageSize;
+    this.compToggleCacheInfo.list = this.articelInfo.list;
+    this.compToggleCacheInfo.pageNum = this.articelInfo.pageNum;
+    this.compToggleCacheInfo.pageSize = this.articelInfo.pageSize;
+    this.compToggleCacheInfo.scrollTop = this.articelInfo.scrollTop;
   },
+
   methods: {
-    getCacheScrollTop(e) {
-      this.scrollTop = e.target.scrollTop;
+    // 依据分类缓存数据
+    cacheCateInfo() {
+      let cateToggleCacheInfo = this.cateToggleCacheInfo;
+      let category = this.category;
+      let scrollTop = this.articelInfo.scrollTop;
+      let articelInfo = this.articelInfo;
+      this.$set(cateToggleCacheInfo, category, {
+        scrollTop,
+        ...articelInfo,
+      });
     },
 
     async doArticleListQuery() {
@@ -132,42 +157,53 @@ export default {
       return articleList;
     },
 
+    // 数据初始化
     async initHandle() {
+      console.log("初始化")
+      let articelInfo = this.articelInfo;
       //重置页码
-      this.articelInfo.pageNum = 1;
-      // console.log(this.scrollTop);
-
-      // console.dir(this.$refs.article);
+      articelInfo.pageNum = 1;
       //获取文章列表数据
-
-      const articleList = await this.doArticleListQuery();
-      this.articelInfo.list = articleList.rows;
-      this.articelInfo.count = articleList.count;
-      this.$refs.article.scrollTo(0, 0);
+      const result = await this.doArticleListQuery();
+      articelInfo.list = result.rows;
+      articelInfo.count = result.count;
+      //回到顶部
+      this.$nextTick(() => {
+        this.$refs.article.scrollTo(0, 0);
+      });
       //300ms后关闭骨架屏
       setTimeout(() => {
         this.isSkeleton = false;
       }, 300);
     },
 
+    // 加载更多
     async doLoadMore() {
-      let pageNum = this.articelInfo.pageNum;
-      let maxPageNum = Math.ceil(
-        this.articelInfo.count / this.articelInfo.pageSize
-      );
+      let articelInfo = this.articelInfo;
+      let pageNum = articelInfo.pageNum;
+      let maxPageNum = Math.ceil(articelInfo.count / articelInfo.pageSize);
       if (pageNum < maxPageNum) {
-        this.articelInfo.pageNum += 1;
+        articelInfo.pageNum += 1;
         const moreArticleList = await this.doArticleListQuery();
-        this.articelInfo.list.push(...moreArticleList.rows);
+        articelInfo.list.push(...moreArticleList.rows);
       }
+    },
+
+    listeningScrollTop() {
+      this.$refs.article.addEventListener(
+        "scroll",
+        (e) => {
+          this.articelInfo.scrollTop = e.target.scrollTop;
+        },
+        true
+      );
     },
 
     timeFormat(timeStr) {
       return timeStr.substr(0, 10);
     },
+
     gotoDetail(articleID) {
-      // let detail = this.$router.push({ path: `/detail/${articleID}` });
-      // window.open(detail.href, "_blank");
       this.$router.push({ path: `/detail/${articleID}` });
     },
   },

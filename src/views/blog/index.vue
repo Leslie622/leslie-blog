@@ -20,7 +20,8 @@
               <el-select
                 class="select"
                 v-model="currentCategory"
-                @change="cache(), headerSwitch()"
+                @visible-change="a"
+                @change="cacheHandler(), headerSwitch()"
               >
                 <el-option
                   v-for="item in articleCategory"
@@ -103,7 +104,7 @@
       </header>
       <div class="blog">
         <keep-alive>
-          <router-view :category="currentCategory" class="publicWrapper" />
+          <router-view :category="currentCategory" class="publicWrapper" ref="blog" />
         </keep-alive>
       </div>
     </div>
@@ -120,7 +121,7 @@ export default {
       //总文章分类
       articleCategory: [],
       //当前文章分类
-      currentCategory: "",
+      currentCategory: 0,
       //路由
       linkList: [
         { path: "/home", value: "主页", iconClass: "iconfont icon-zhuye-copy" },
@@ -162,6 +163,12 @@ export default {
   },
 
   methods: {
+    a(r) {
+      // 下拉框显示时，通知子组件记录数据
+      if (r) {
+        this.$refs.blog.cacheCateInfo()
+      }
+    },
     async getAllCategory() {
       //没做登录，写死userID:8
       const category = await articleCategoryQuery("8");
@@ -188,7 +195,7 @@ export default {
       });
     },
 
-    cache() {
+    cacheHandler() {
       window.localStorage.setItem("currentCategory", this.currentCategory);
     },
 
@@ -211,4 +218,5 @@ export default {
 <style lang="scss" scoped>
 @import "./index.scss";
 @import "~components/import/element-ui/css/views/blog/header-select.scss";
+
 </style>

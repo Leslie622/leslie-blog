@@ -31,6 +31,7 @@ export function request(config) {
 
   //响应拦截
   instance.interceptors.response.use(
+
     response => {
       if (response.data.code != 200) {
         switch (response.data.code) {
@@ -42,7 +43,7 @@ export function request(config) {
             });
             return Promise.reject(response)
           case 404:
-            router.push('/404');
+            router.push('/page404');
             return Promise.reject(response)
           default:
             Message({
@@ -60,7 +61,7 @@ export function request(config) {
       if (error.response) {
         switch (error.response.status) {
           case 404:
-            router.push('/404');
+            router.push('/page404');
             break;
           default:
             Message({

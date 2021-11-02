@@ -54,7 +54,7 @@
 
     <empty-state v-if="!isSkeleton && !articleData.list.length"></empty-state>
 
-    <back-top targets=".article-wrapper" :visibilityHeight="1500"> </back-top>
+    <back-top targets=".article-wrapper" :visibilityHeight="1000"> </back-top>
   </main>
 </template>
  
@@ -69,6 +69,7 @@ export default {
     EmptyState,
     BackTop,
   },
+  
   props: {
     category: {
       type: Number,

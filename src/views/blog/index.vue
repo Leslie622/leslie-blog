@@ -81,22 +81,34 @@
                 </a>
               </div>
               <div>
-                <el-popover placement="top-start" trigger="click">
+                <a
+                  target="_blank"
+                  href="https://gitee.com/Lyf-622"
+                  title="我的Gitee主页"
+                >
+                  <i class="iconfont icon-gitee1"></i>
+                </a>
+              </div>
+
+              <div>
+                <el-popover placement="top-start" trigger="click" width="100">
                   <img
                     src="@/assets/img/contact/weChatQR.png"
                     class="weChatQR"
+                    style="width: 100%"
                   />
                   <i class="iconfont icon-weixin" slot="reference"></i>
                 </el-popover>
               </div>
               <div>
-                <a
-                  target="_blank"
-                  href="http://wpa.qq.com/msgrd?v=3&uin=416317444&site=qq&menu=yes"
-                  title="使用QQ联系我"
-                >
-                  <i class="iconfont icon-ziyuan"></i>
-                </a>
+                <el-popover placement="top-start" trigger="click" width="100">
+                  <img
+                    src="@/assets/img/contact/qqQR.jpg"
+                    class="weChatQR"
+                    style="width: 100%"
+                  />
+                  <i class="iconfont icon-ziyuan" slot="reference"></i>
+                </el-popover>
               </div>
             </div>
           </div>

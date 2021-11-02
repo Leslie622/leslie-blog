@@ -2,7 +2,7 @@
   <main
     class="archive-wrapper"
     ref="archive"
-    infinite-scroll-distance="10"
+    infinite-scroll-distance="200"
     v-infinite-scroll="doLoadMore"
     infinite-scroll-immediate-check="false"
   >

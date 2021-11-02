@@ -180,7 +180,10 @@ export default {
     },
 
     gotoDetail(articleID) {
-      this.$router.push({ path: `/detail/${articleID}` });
+      let routeUrl = this.$router.resolve({
+        path: `/detail/${articleID}`,
+      });
+      window.open(routeUrl.href, "_blank");
     },
   },
 };
@@ -189,4 +192,5 @@ export default {
 <style lang="scss" scoped>
 @import "./index.scss";
 @import "~components/import/element-ui/css/views/blog/archive/archive-timeLine.scss";
+
 </style>

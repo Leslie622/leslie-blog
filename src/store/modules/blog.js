@@ -1,10 +1,18 @@
 export const blog = {
   state: () => ({
-    category:""
+    articleCacheData: {
+
+    },
+    archiveCacheData: {
+
+    }
   }),
   mutations: {
-    setCurrentCategory(state,category){
-      state.category = category
+    setArticleCacheData(state, { category, articleData }) {
+      state.articleCacheData[category] = articleData
+    },
+    setArchiveCacheData(state, { category, archiveData }) {
+      state.archiveCacheData[category] = archiveData
     }
   },
   actions: {},

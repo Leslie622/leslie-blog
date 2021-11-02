@@ -20,8 +20,8 @@
               <el-select
                 class="select"
                 v-model="currentCategory"
-                @visible-change="a"
-                @change="cacheHandler(), headerSwitch()"
+                @visible-change="cacheBlogDataHandler"
+                @change="cacheCategoryHandler(), headerSwitch()"
               >
                 <el-option
                   v-for="item in articleCategory"
@@ -45,11 +45,11 @@
             </ul>
             <div class="total">
               <div class="total-item articleTotal">
-                <span>{{ total.articleCount }}</span>
+                <span>{{ overView.articleCount }}</span>
                 <p>总文章数</p>
               </div>
               <div class="total-item browseTotal">
-                <span>{{ total.views }}</span>
+                <span>{{ overView.views }}</span>
                 <p>总阅读数</p>
               </div>
             </div>
@@ -104,7 +104,11 @@
       </header>
       <div class="blog">
         <keep-alive>
-          <router-view :category="currentCategory" class="publicWrapper" ref="blog" />
+          <router-view
+            :category="currentCategory"
+            class="publicWrapper"
+            ref="blogContent"
+          />
         </keep-alive>
       </div>
     </div>
@@ -113,6 +117,22 @@
 <script>
 import { articleCategoryQuery } from "@/api/module/blog";
 import anime from "animejs";
+
+// ==== 路由项 ==== //
+const linkList = [
+  { path: "/home", value: "主页", iconClass: "iconfont icon-zhuye-copy" },
+  {
+    path: "/blogMain",
+    value: "文章",
+    iconClass: "iconfont icon-wenzhang",
+  },
+  {
+    path: "/blogArchive",
+    value: "归档",
+    iconClass: "iconfont icon-guidang",
+  },
+];
+
 export default {
   data() {
     return {
@@ -122,21 +142,8 @@ export default {
       articleCategory: [],
       //当前文章分类
       currentCategory: 0,
-      //路由
-      linkList: [
-        { path: "/home", value: "主页", iconClass: "iconfont icon-zhuye-copy" },
-        {
-          path: "/blogMain",
-          value: "文章",
-          iconClass: "iconfont icon-wenzhang",
-        },
-        {
-          path: "/blogArchive",
-          value: "归档",
-          iconClass: "iconfont icon-guidang",
-        },
-      ],
-      total: {
+      linkList,
+      overView: {
         articleCount: 0,
         views: 0,
       },
@@ -152,7 +159,7 @@ export default {
 
   created() {
     //获取文章分类并设置默认分类
-    this.getAllCategory().then(() => {
+    this.initHandler().then(() => {
       this.getTotalData();
     });
   },
@@ -163,19 +170,18 @@ export default {
   },
 
   methods: {
-    a(r) {
-      // 下拉框显示时，通知子组件记录数据
-      if (r) {
-        this.$refs.blog.cacheCateInfo()
-      }
-    },
-    async getAllCategory() {
+    doArticleCategoryQuery() {
       //没做登录，写死userID:8
-      const category = await articleCategoryQuery("8");
+      const category = articleCategoryQuery("8");
+      return category;
+    },
+
+    async initHandler() {
+      let category = await this.doArticleCategoryQuery();
       this.articleCategory = category;
-      //判断是否有缓存的分类:没有则默认为第一项
-      let defaultCategory = this.cacheCategory
-        ? Number(this.cacheCategory)
+      const cacheCategory = this.cacheCategory;
+      let defaultCategory = cacheCategory
+        ? Number(cacheCategory)
         : category[0].id;
       this.currentCategory = defaultCategory;
     },
@@ -186,17 +192,26 @@ export default {
         articleCount += item.blogs.length;
       });
       anime({
-        targets: this.$data.total,
+        // 作用对象
+        targets: this.$data.overView,
+        // 作用属性
         articleCount: articleCount,
         views: 1530,
-        duration: 2000,
+        duration: 3000,
         round: 1,
         easing: "easeOutQuint",
       });
     },
 
-    cacheHandler() {
+    cacheCategoryHandler() {
       window.localStorage.setItem("currentCategory", this.currentCategory);
+    },
+
+    cacheBlogDataHandler(isPullDown) {
+      // 下拉框显示时，通知子组件记录数据
+      if (isPullDown) {
+        this.$refs.blogContent.cacheData();
+      }
     },
 
     headerSwitch() {
@@ -205,8 +220,8 @@ export default {
 
     listenerWindowResize() {
       window.addEventListener("resize", (res) => {
-        //浏览器宽度大于1024px时,自动收缩头部
-        if (res.currentTarget.innerWidth > 1024) {
+        //浏览器宽度大于1000px时,自动收缩头部
+        if (res.currentTarget.innerWidth > 1000) {
           this.headerActive = false;
         }
       });

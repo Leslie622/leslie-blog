@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-// 异步组件
 const Home = () => import('@/views/home')
 const Blog = () => import('@/views/blog')
 const BlogArticle = () => import('@/views/blog/components/article/BlogArticle.vue')
@@ -10,7 +9,6 @@ const BlogArchive = () => import('@/views/blog/components/archive/BlogArchive.vu
 const Detail = () => import('@/views/detail/index.vue')
 
 const routes = [
-
   {
     path: "*",
     redirect: "/Home"

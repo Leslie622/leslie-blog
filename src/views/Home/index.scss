@@ -1,5 +1,4 @@
 .wrapper {
-  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,11 +12,11 @@
   font-size: 8rem;
 }
 
-.nav-cotent {
-  padding: 2rem 0;
+.nav {
+  margin: 1.5rem 0;
   font-family: Arial;
 
-  .nav-item {
+  .item {
     padding: 1rem;
     font-size: 1.5rem;
     color: #249ffd;

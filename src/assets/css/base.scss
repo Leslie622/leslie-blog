@@ -7,13 +7,11 @@
 // 移动端适配
 @import "~assets/css/responsive/index.scss";
 
-
 // 字体
 @font-face {
   font-family: "Monoton-Regular";
   src: url(~assets/font/Monoton-Regular.ttf);
 }
-
 
 html {
   // 火狐下隐藏滚动条
@@ -30,8 +28,28 @@ html {
 
 // 动画速度：超快
 .ainmateFaster {
-  --animate-duration: .2s;
+  --animate-duration: 0.2s;
 }
 
-
-
+// 路由过渡动画设置
+.transition-body {
+  transition: transform 0.3s ease-out;
+}
+.slideLeft-enter,
+.slideRight-leave-active {
+  transform: translate(100%, 0);
+}
+.slideLeft-leave-active,
+.slideRight-enter {
+  transform: translate(-100%, 0);
+}
+.slideLeft-enter-active,
+.slideRight-enter-active,
+.slideRight-leave-active,
+.slideLeft-leave-active {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}

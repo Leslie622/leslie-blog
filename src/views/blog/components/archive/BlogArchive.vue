@@ -24,10 +24,10 @@
       </template>
     </el-skeleton>
 
-    <div class="content" v-if="!isSkeleton && articelInfo.list.length">
+    <div class="content" v-if="!isSkeleton && archiveData.list.length">
       <el-timeline class="filingTimeLine">
         <el-timeline-item
-          v-for="(item, index) in articelInfo.list"
+          v-for="(item, index) in archiveData.list"
           :key="index"
           :timestamp="item.create_time"
         >
@@ -40,7 +40,7 @@
     </div>
 
     <empty-state
-      v-else-if="!isSkeleton && !articelInfo.list.length"
+      v-else-if="!isSkeleton && !archiveData.list.length"
     ></empty-state>
 
     <back-top targets=".archive-wrapper" :visibilityHeight="300"> </back-top>
@@ -49,8 +49,9 @@
  
 <script>
 import EmptyState from "@/components/mine/common/empty-state/EmptyState";
-import { articleListQuery } from "@/api/module/blog";
 import BackTop from "@/components/mine/common/back-top/BackTop.vue";
+import { articleListQuery } from "@/api/module/blog";
+import { deepClone } from "@/util/index";
 
 export default {
   components: {
@@ -63,98 +64,89 @@ export default {
       default: 0,
     },
   },
+
   data() {
     return {
       // 控制骨架屏
       isSkeleton: true,
-      // 现存数据
-      articelInfo: {
+      // 归档数据
+      archiveData: {
         list: [],
         count: 0,
         pageNum: 1,
         pageSize: 10,
         scrollTop: 0,
       },
-      // 组件切换缓存数据
-      compToggleCacheInfo: {
-        list: [],
-        pageNum: 1,
-        pageSize: 10,
-        scrollTop: 0,
-      },
-      // 分类切换缓存数据
-      cateToggleCacheInfo: {},
     };
   },
-  watch: {
-    // 分类改变，检测是否存在缓存数据,否则初始化数据
-    category: function (newCate) {
-      let cacheInfo = this.cateToggleCacheInfo;
-      let isHavaCache = Object.keys(cacheInfo).includes(String(newCate));
-      if (isHavaCache) {
-        this.articelInfo = this.cateToggleCacheInfo[newCate];
-        this.$nextTick(() => {
-          this.$refs.archive.scrollTo(0, this.articelInfo.scrollTop);
-        });
-      } else {
-        this.initHandle();
-      }
+
+  computed: {
+    archiveCacheData() {
+      return this.$store.state.blog.archiveCacheData;
     },
   },
+
+  watch: {
+    // 分类改变，检测是否存在缓存数据,否则初始化数据
+    category: function () {
+      this.setArchiveCacheData();
+    },
+  },
+
   mounted() {
     this.listeningScrollTop();
   },
 
   activated() {
-    let isHavaCache = Boolean(this.compToggleCacheInfo.list.length);
-    if (isHavaCache) {
-      this.articelInfo.list = this.compToggleCacheInfo.list;
-      this.articelInfo.pageNum = this.compToggleCacheInfo.pageNum;
-      this.articelInfo.pageSize = this.compToggleCacheInfo.pageSize;
-      this.$refs.archive.scrollTo(0, this.compToggleCacheInfo.scrollTop);
-    } else {
-      this.initHandle();
-    }
+    this.setArchiveCacheData();
   },
 
   deactivated() {
-    this.compToggleCacheInfo.list = this.articelInfo.list;
-    this.compToggleCacheInfo.pageNum = this.articelInfo.pageNum;
-    this.compToggleCacheInfo.pageSize = this.articelInfo.pageSize;
-    this.compToggleCacheInfo.scrollTop = this.articelInfo.scrollTop;
+    this.cacheData();
   },
 
   methods: {
-    // 依据分类缓存数据
-    cacheCateInfo() {
-      let cateToggleCacheInfo = this.cateToggleCacheInfo;
-      let category = this.category;
-      let scrollTop = this.articelInfo.scrollTop;
-      let articelInfo = this.articelInfo;
-      this.$set(cateToggleCacheInfo, category, {
-        scrollTop,
-        ...articelInfo,
+    // 缓存数据
+    cacheData() {
+      this.$store.commit("setArchiveCacheData", {
+        category: this.category,
+        archiveData: deepClone(this.archiveData),
       });
     },
 
-    async doArticleListQuery() {
-      const articleList = await articleListQuery(
-        this.category,
-        this.articelInfo.pageNum,
-        this.articelInfo.pageSize
+    // 填充缓存数据
+    setArchiveCacheData() {
+      let isHavaCache = Object.keys(this.archiveCacheData).includes(
+        String(this.category)
       );
-      return articleList;
+      if (isHavaCache) {
+        this.archiveData = this.archiveCacheData[this.category];
+        this.$nextTick(() => {
+          this.$refs.archive.scrollTo(0, this.archiveData.scrollTop);
+        });
+      } else {
+        this.initHandle();
+      }
+    },
+
+    async doArchiveListQuery() {
+      const archiveList = await articleListQuery(
+        this.category,
+        this.archiveData.pageNum,
+        this.archiveData.pageSize
+      );
+      return archiveList;
     },
 
     // 数据初始化
     async initHandle() {
-      let articelInfo = this.articelInfo;
+      let archiveData = this.archiveData;
       //重置页码
-      articelInfo.pageNum = 1;
+      archiveData.pageNum = 1;
       //获取文章列表数据
-      const result = await this.doArticleListQuery();
-      articelInfo.list = result.rows;
-      articelInfo.count = result.count;
+      const result = await this.doArchiveListQuery();
+      archiveData.list = result.rows;
+      archiveData.count = result.count;
       //回到顶部
       this.$nextTick(() => {
         this.$refs.archive.scrollTo(0, 0);
@@ -167,13 +159,13 @@ export default {
 
     // 加载更多
     async doLoadMore() {
-      let articelInfo = this.articelInfo;
-      let pageNum = articelInfo.pageNum;
-      let maxPageNum = Math.ceil(articelInfo.count / articelInfo.pageSize);
+      let archiveData = this.archiveData;
+      let pageNum = archiveData.pageNum;
+      let maxPageNum = Math.ceil(archiveData.count / archiveData.pageSize);
       if (pageNum < maxPageNum) {
-        articelInfo.pageNum += 1;
-        const moreArticleList = await this.doArticleListQuery();
-        articelInfo.list.push(...moreArticleList.rows);
+        archiveData.pageNum += 1;
+        const moreArchiveList = await this.doArchiveListQuery();
+        archiveData.list.push(...moreArchiveList.rows);
       }
     },
 
@@ -181,7 +173,7 @@ export default {
       this.$refs.archive.addEventListener(
         "scroll",
         (e) => {
-          this.articelInfo.scrollTop = e.target.scrollTop;
+          this.archiveData.scrollTop = e.target.scrollTop;
         },
         true
       );

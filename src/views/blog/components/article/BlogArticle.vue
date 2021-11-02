@@ -19,8 +19,8 @@
       </template>
     </el-skeleton>
 
-    <article class="content" v-if="!isSkeleton && articelInfo.list.length">
-      <section class="item" v-for="item in articelInfo.list">
+    <article class="content" v-if="!isSkeleton && articleData.list.length">
+      <section class="item" v-for="item in articleData.list">
         <div class="title" :title="item.title">
           {{ item.title }}
         </div>
@@ -52,7 +52,7 @@
       </section>
     </article>
 
-    <empty-state v-if="!isSkeleton && !articelInfo.list.length"></empty-state>
+    <empty-state v-if="!isSkeleton && !articleData.list.length"></empty-state>
 
     <back-top targets=".article-wrapper" :visibilityHeight="1500"> </back-top>
   </main>
@@ -62,6 +62,7 @@
 import EmptyState from "@/components/mine/common/empty-state/EmptyState";
 import BackTop from "@/components/mine/common/back-top/BackTop.vue";
 import { articleListQuery } from "@/api/module/blog";
+import { deepClone } from "@/util/index";
 
 export default {
   components: {
@@ -74,99 +75,89 @@ export default {
       default: 0,
     },
   },
+
   data() {
     return {
       // 控制骨架屏
       isSkeleton: true,
-      // 现存数据
-      articelInfo: {
+      // 文章数据
+      articleData: {
         list: [],
         count: 0,
         pageNum: 1,
         pageSize: 10,
         scrollTop: 0,
       },
-      // 组件切换缓存数据
-      compToggleCacheInfo: {
-        list: [],
-        pageNum: 1,
-        pageSize: 10,
-        scrollTop: 0,
-      },
-      // 分类切换缓存数据
-      cateToggleCacheInfo: {},
     };
   },
-  watch: {
-    // 分类改变，检测是否存在缓存数据,否则初始化数据
-    category: function (newCate) {
-      let cacheInfo = this.cateToggleCacheInfo;
-      let isHavaCache = Object.keys(cacheInfo).includes(String(newCate));
-      if (isHavaCache) {
-        this.articelInfo = this.cateToggleCacheInfo[newCate];
-        this.$nextTick(() => {
-          this.$refs.article.scrollTo(0, this.articelInfo.scrollTop);
-        });
-      } else {
-        this.initHandle();
-      }
+
+  computed: {
+    articleCacheData() {
+      return this.$store.state.blog.articleCacheData;
     },
   },
+
+  watch: {
+    // 分类改变，检测是否存在缓存数据,否则初始化数据
+    category: function () {
+      this.setArticleCacheData();
+    },
+  },
+
   mounted() {
     this.listeningScrollTop();
   },
 
   activated() {
-    let isHavaCache = Boolean(this.compToggleCacheInfo.list.length);
-    if (isHavaCache) {
-      this.articelInfo.list = this.compToggleCacheInfo.list;
-      this.articelInfo.pageNum = this.compToggleCacheInfo.pageNum;
-      this.articelInfo.pageSize = this.compToggleCacheInfo.pageSize;
-      this.$refs.article.scrollTo(0, this.compToggleCacheInfo.scrollTop);
-    } else {
-      this.initHandle();
-    }
+    this.setArticleCacheData();
   },
 
   deactivated() {
-    this.compToggleCacheInfo.list = this.articelInfo.list;
-    this.compToggleCacheInfo.pageNum = this.articelInfo.pageNum;
-    this.compToggleCacheInfo.pageSize = this.articelInfo.pageSize;
-    this.compToggleCacheInfo.scrollTop = this.articelInfo.scrollTop;
+    this.cacheData();
   },
 
   methods: {
-    // 依据分类缓存数据
-    cacheCateInfo() {
-      let cateToggleCacheInfo = this.cateToggleCacheInfo;
-      let category = this.category;
-      let scrollTop = this.articelInfo.scrollTop;
-      let articelInfo = this.articelInfo;
-      this.$set(cateToggleCacheInfo, category, {
-        scrollTop,
-        ...articelInfo,
+    // 缓存数据
+    cacheData() {
+      this.$store.commit("setArticleCacheData", {
+        category: this.category,
+        articleData: deepClone(this.articleData),
       });
+    },
+
+    // 填充缓存数据
+    setArticleCacheData() {
+      let isHavaCache = Object.keys(this.articleCacheData).includes(
+        String(this.category)
+      );
+      if (isHavaCache) {
+        this.articleData = this.articleCacheData[this.category];
+        this.$nextTick(() => {
+          this.$refs.article.scrollTo(0, this.articleData.scrollTop);
+        });
+      } else {
+        this.initHandle();
+      }
     },
 
     async doArticleListQuery() {
       const articleList = await articleListQuery(
         this.category,
-        this.articelInfo.pageNum,
-        this.articelInfo.pageSize
+        this.articleData.pageNum,
+        this.articleData.pageSize
       );
       return articleList;
     },
 
     // 数据初始化
     async initHandle() {
-      console.log("初始化")
-      let articelInfo = this.articelInfo;
+      let articleData = this.articleData;
       //重置页码
-      articelInfo.pageNum = 1;
+      articleData.pageNum = 1;
       //获取文章列表数据
       const result = await this.doArticleListQuery();
-      articelInfo.list = result.rows;
-      articelInfo.count = result.count;
+      articleData.list = result.rows;
+      articleData.count = result.count;
       //回到顶部
       this.$nextTick(() => {
         this.$refs.article.scrollTo(0, 0);
@@ -179,13 +170,13 @@ export default {
 
     // 加载更多
     async doLoadMore() {
-      let articelInfo = this.articelInfo;
-      let pageNum = articelInfo.pageNum;
-      let maxPageNum = Math.ceil(articelInfo.count / articelInfo.pageSize);
+      let articleData = this.articleData;
+      let pageNum = articleData.pageNum;
+      let maxPageNum = Math.ceil(articleData.count / articleData.pageSize);
       if (pageNum < maxPageNum) {
-        articelInfo.pageNum += 1;
+        articleData.pageNum += 1;
         const moreArticleList = await this.doArticleListQuery();
-        articelInfo.list.push(...moreArticleList.rows);
+        articleData.list.push(...moreArticleList.rows);
       }
     },
 
@@ -193,7 +184,7 @@ export default {
       this.$refs.article.addEventListener(
         "scroll",
         (e) => {
-          this.articelInfo.scrollTop = e.target.scrollTop;
+          this.articleData.scrollTop = e.target.scrollTop;
         },
         true
       );
@@ -213,4 +204,5 @@ export default {
 <style lang="scss" scoped>
 @import "./index.scss";
 @import "~components/import/element-ui/css/views/blog/article/image.scss";
+
 </style>

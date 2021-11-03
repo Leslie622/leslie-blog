@@ -18,6 +18,7 @@ Html + Scss + Js + Axios + Vue + Vue-cli + Vue-router + VueX + ElementUI
 
 - MarkDown排版
 - 目录跳转
+- 代码高亮，代码块复制
 
 ### 日记页（待开发）
 

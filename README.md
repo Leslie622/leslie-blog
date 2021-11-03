@@ -28,6 +28,10 @@ Html + Scss + Js + Axios + Vue + Vue-cli + Vue-router + VueX + ElementUI
 - 记录喜欢的电影。写影评
 - 记录喜欢的音乐。会做一个音乐播放器
 
+### Demo页（待开发）
+
+- 技术向，展示一些小Demo
+
 ### 友链页（待开发）
 
 - 🤼‍♂️👯‍♂️💑👪👨‍👩‍👧‍👦👩‍👩‍👦‍👦

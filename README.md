@@ -1,28 +1,37 @@
-## leslie个人博客2.0，根据1.0进行重构
+# leslie的个人博客🎉🎉🎉
 
-优化如下：
-1. 减少了网络请求，渲染更快
-2. 去除了不必要的模块
-3. UI组件按需引入，减小体积
-3. 优化css布局逻辑，纵享丝滑
-4. 优化代码逻辑，清晰易懂，便于维护
+## 技术栈：
 
-### Project setup
-```
-npm install
-```
+Html + Scss + Js + Axios + Vue + Vue-cli + Vue-router + VueX + ElementUI
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## 主要页面及功能：
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### 博客页（基本完成）
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-"# leslie-blog" 
-"# leslie-blog" 
+1. 文章、归档（后续归档会按照年月份分类）
+2. 按关键词查询文章或归档内容
+3. 缓存页面内容和滚动距离，切换无忧
+4. 博客数据总览
+5. 个人外站链接总览（后面会写成全局组件）
+
+### 详情页（基本完成）
+
+1. MarkDown排版
+2. 目录跳转
+
+### 日记页（待开发）
+
+1. 记录日常、心情
+
+### 影音页（待开发）
+
+1. 记录喜欢的电影。写影评
+2. 记录喜欢的音乐。会做一个音乐播放器
+
+### 友链页（待开发）
+
+1. 🤼‍♂️👯‍♂️💑👪👨‍👩‍👧‍👦👩‍👩‍👦‍👦
+
+## 项目亮点
+
+1. 响应式：一套代码，多端适用，主要包括电脑，手机，平板
